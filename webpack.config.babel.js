@@ -5,10 +5,7 @@ const sourcePath = path.join(__dirname, 'src');
 
 const config = {
   entry: ['babel-polyfill', path.resolve(sourcePath, 'App.js')],
-  output: {
-    path: __dirname,
-    filename: 'bundle.js',
-  },
+  output: { path: __dirname, filename: 'bundle.js', },
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: [sourcePath, path.resolve(__dirname, 'node_modules')],
