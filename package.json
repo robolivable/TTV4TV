@@ -19,6 +19,11 @@
     "test": "echo \"No tests currently defined\""
   },
   "license": "MIT",
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-tv": "0.3.3",
+    "react-tv-cli": "^0.3.3"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -27,9 +32,6 @@
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.1.1",
     "jest": "^23.6.0",
-    "react": "^16.2.0",
-    "react-tv": "^0.4.2",
-    "react-tv-cli": "^0.4.2",
     "react-tv-navigation": "^0.4.2",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
