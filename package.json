@@ -13,7 +13,8 @@
     "build-prod": "cross-env NODE_ENV=production yarn build",
     "react-tv-cli": "react-tv-cli",
     "run-webos": "yarn build-prod && react-tv-cli run-webos",
-    "start": "webpack-dev-server --progress --colors",
+    "start": "yarn build && WEBOS_CLI_TV_VERSION=4.0.0 react-tv-cli run-webos",
+    "start-dev": "webpack-dev-server --progress --colors",
     "test": "echo \"No tests currently defined\""
   },
   "license": "MIT",
