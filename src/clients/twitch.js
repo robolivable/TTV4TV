@@ -1,4 +1,4 @@
-const config = require('./config')
+const config = require('../config')
 const uuid4 = require('uuid/v4')
 
 class TwitchAuthorization {
@@ -148,7 +148,7 @@ class Twitch {
            `?client_id=${config.Twitch.CLIENT_ID}` +
            `&redirect_uri=${config.Twitch.REDIRECT_URI}` +
            `&response_type=${config.Twitch.RESPONSE_TYPE}` +
-           `&scope=${config.Twitch.SCOPES.join(' ')} ` +
+           `&scope=${config.Twitch.SCOPES.join(' ')}` +
            `&state=${this.state}`
   }
 
