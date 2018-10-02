@@ -20,14 +20,16 @@ class TwitchResource {
   }
 
   async get (key='', directory='') {
-    return await (await this.client({
-      uri: config.Twitch.URL + directory || this.directory + key,
-      headers: {
-        Accept: config.Twitch.ACCEPT,
-        'Client-ID': config.Twitch.CLIENT_ID,
-        Authorization: `${this.authorization.header}`,
-      },
-    })).json()
+    return await (await this.client(
+      config.Twitch.URL + directory || this.directory + key,
+      {
+        headers: {
+          Accept: config.Twitch.ACCEPT,
+          'Client-ID': config.Twitch.CLIENT_ID,
+          Authorization: `${this.authorization.header}`,
+        }
+      }
+    )).json()
   }
 }
 
