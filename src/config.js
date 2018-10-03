@@ -1,4 +1,5 @@
 const APP_NAME = 'TTV4TV'
+const TWITCH_PLAYER_ID = 'ttv4tv-player'
 
 const Twitch = {
   ACCEPT: 'application/vnd.twitchtv.v5+json',
