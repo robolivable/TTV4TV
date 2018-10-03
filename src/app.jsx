@@ -146,7 +146,7 @@ class List extends React.Component {
       case 'streams':
         return {
           id: item.get('channel')._id,
-          previewUrl: item.get('preview').large
+          previewUrl: item.get('preview').medium
         }
       default:
         return {}
