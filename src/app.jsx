@@ -24,7 +24,7 @@ class TwitchMedia extends React.Component {
         onBlur={this._handleFocusableOnBlur}
       >
         <div
-          class={`item ${(this.state.active && 'item-focus') || ''}`}
+          className={`item${(this.state.active && ' item-focus') || ''}`}
           style={{
             backgroundImage: `url("${this.props.previewUrl}")`,
             backgroundSize: 'cover',
@@ -47,36 +47,44 @@ class TwitchMedia extends React.Component {
 class List extends React.Component {
   constructor (props) {
     super(props)
+    this._handleHorizontalListOnFocus =
+      this._handleHorizontalListOnFocus.bind(this)
+    this._handleHorizontalListOnBlur =
+      this._handleHorizontalListOnBlur.bind(this)
     this._lastFocus = null
   }
 
   componentDidMount () {
+    if (!this.content) {
+      return
+    }
     const width = (
       Math.floor(
         this.content.scrollWidth /
         this.content.clientWidth
-      ) * this.content.clientsWidth
+      ) * this.content.clientWidth
     ) + this.content.clientWidth + 20
     const hzListElements = this.content.getElementsByClassName('hz-list')
-    if (hzListElements[0]) {
-      hzListElements[0].style.width = `${width}px`
+    if (!width || !hzListElements[0]) {
+      return
     }
+    hzListElements[0].style.width = `${width}px`
   }
 
   render () {
     return (
-      <div class={`contentgroup ${this.props.visible ? '' : 'fading-out'}`}>
+      <div className={`contentgroup${this.props.visible ? '' : ' fading-out'}`}>
         <h1>{this.props.title}</h1>
-        <div class='content' ref={content => {this.content = content}}>
+        <div id='content' ref={content => {this.content = content}}>
           <HorizontalList
-            class='hz-list'
+            className='hz-list'
             style={{ overflow: 'hidden', display: 'block' }}
             onFocus={this._handleHorizontalListOnFocus}
-            onBlur={() => { this._lastFocus = null }}
+            onBlur={this._handleHorizontalListOnBlur}
           >
             {this.props.medias.map((media, key) => {
               const { id, previewUrl } = List.mediaPropsByType(
-                this.props.title,
+                this.props.name,
                 media
               )
               return (
@@ -193,15 +201,15 @@ class TTV4TV extends React.Component {
       })(), // TODO: support subs
       (async () => {
         const val = await this.twitch.following()
-        return { name: 'following', val }
+        return { name: 'following', namePretty: 'Following', val }
       })(),
       (async () => {
         const val = await this.twitch.topGames()
-        return { name: 'topGames', val }
+        return { name: 'topGames', namePretty: 'Top Games', val }
       })(),
       (async () => {
         const val = await this.twitch.streams()
-        return { name: 'streams', val }
+        return { name: 'streams', namePretty: 'Live Streams', val }
       })(),
     ])
 
@@ -219,7 +227,7 @@ class TTV4TV extends React.Component {
   render() {
     return (
       <Navigation>
-        <div class="container">
+        <div id="container">
           {this.state.isMediaPlayerEnabled ? () => {
             switch (this.state.media.type) {
               case 'collection':
@@ -248,21 +256,23 @@ class TTV4TV extends React.Component {
           } : null}
           <HorizontalList>
             {/*<Sidebar/> TODO*/}
-            <div class="mainbox">
+            <div className="mainbox">
               <VerticalList navDefault>
                 {/*<Search/> TODO*/}
                 <VerticalList
-                  class="content"
+                  className='content'
                   onBlur={this._handleVerticalListOnBlur}
                 >
                   {this.state.lists.map((list, key) =>
                     <List
                       key={key}
-                      title={list.name}
+                      title={list.namePretty}
+                      name={list.name}
                       medias={list.val || []}
                       onFocus={this._handleListOnFocus(key)}
-                      visible={this.state.activeFocus === null ||
-                               key >= this.state.activeFocus}
+                      visible={!!list.val && !!list.val.length &&
+                               (this.state.activeFocus === null ||
+                               key >= this.state.activeFocus)}
                       onMediaClick={this._handleMediaClick}
                     />
                   )}
