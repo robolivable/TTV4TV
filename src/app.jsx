@@ -122,10 +122,17 @@ class List extends React.Component {
     this._lastFocus = index
   }
 
+  _handleHorizontalListOnBlur () {
+    this._lastFocus = null
+  }
+
   static mediaPropsByType (type, item) {
     switch (type) {
       case 'subscribed':
-        return { id: null, previewUrl: null } // TODO: support subs
+        return {
+          id: item.get('channel')._id,
+          previewUrl: item.get('channel').logo
+        } 
       case 'followed':
         return {
           id: item.get('channel')._id,
@@ -196,9 +203,9 @@ class TTV4TV extends React.Component {
     const lists = await Promise.all([
       //async () => ({ name: 'subscribed', val: await this.twitch.subscribed()}),
       (async () => {
-        const val = undefined
-        return { name: 'subscribed', val }
-      })(), // TODO: support subs
+        const val = await this.twitch.subscribed()
+        return { name: 'subsriptions', namePretty: 'Subscriptions', val }
+      })(),
       (async () => {
         const val = await this.twitch.following()
         return { name: 'following', namePretty: 'Following', val }
@@ -215,8 +222,7 @@ class TTV4TV extends React.Component {
 
     this.setState({
       fetched: true,
-      //subscribed: lists[0].val.subs, // TODO: implement subs
-      subscribed: [],
+      subscribed: lists[0].val,
       following: lists[1].val,
       topGames: lists[2].val,
       streams: lists[3].val,

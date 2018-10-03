@@ -169,7 +169,7 @@ class Twitch {
   }
 
   async subscribed () {
-    // TODO: find out how to cross reference emotes to channels
+    return [] // TODO: find out how to cross reference emotes to channels
   }
 
   async following () {

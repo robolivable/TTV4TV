@@ -5,3 +5,5 @@ react-tv
 node_modules
 
 bundle.js
+
+.npmrc
