@@ -1,4 +1,23 @@
 const APP_NAME = 'TTV4TV'
+
+const PLAYER_INIT_WIDTH = '100%'
+const PLAYER_INIT_HEIGHT = '100%'
+const PLAYER_INIT_VOLUME = 0.5
+
+const MEDIA_TYPES = {
+  following: 'following',
+  streams: 'streams',
+  subscribed: 'subscribed',
+  topGames: 'topGames',
+}
+
+const MEDIA_PLAYER_TYPES = {
+  following: 'channel',
+  streams: 'channel',
+  subscribed: 'channel',
+  topGames: null,
+}
+
 const TWITCH_PLAYER_ID = 'ttv4tv-player'
 
 const Twitch = {
@@ -29,5 +48,11 @@ const Twitch = {
 
 module.exports = {
   APP_NAME,
+  MEDIA_TYPES,
+  MEDIA_PLAYER_TYPES,
+  PLAYER_INIT_HEIGHT,
+  PLAYER_INIT_VOLUME,
+  PLAYER_INIT_WIDTH,
   Twitch,
+  TWITCH_PLAYER_ID,
 }

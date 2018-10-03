@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const sourcePath = path.join(__dirname, 'src');
 
 const config = {
-  entry: ['babel-polyfill', path.resolve(sourcePath, 'App.js')],
+  entry: ['babel-polyfill', path.resolve(sourcePath, 'app.jsx')],
   output: { path: __dirname, filename: 'bundle.js', },
   resolve: {
     extensions: ['.js', '.jsx'],

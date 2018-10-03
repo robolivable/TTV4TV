@@ -22,6 +22,7 @@
   "dependencies": {
     "react": "^16.2.0",
     "react-tv": "0.3.4",
+    "react-key-navigation": "0.0.9",
     "react-tv-cli": "^0.3.4"
   },
   "devDependencies": {
