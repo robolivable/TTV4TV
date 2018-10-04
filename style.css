@@ -8,11 +8,118 @@ html, body {
 }
 
 :focus {
-  outline: 0;
+  outline: 1;
 }
 
-#container {
+.content-title {
+  color: #95a0ff;
+}
+
+.container {
   height: 100%;
+}
+
+.content {
+  height: 100%;
+  position: relative;
+}
+
+.content .medias {
+  white-space: nowrap;
+  font-size: 0;
+  overflow: hidden;
+  padding: 50px;
+  margin: -50px;
+}
+
+.content h1 {
+  font-size: 30px;
+  height: 80px;
+  padding: 0;
+  margin: 0;
+  line-height: 80px;
+}
+
+.content .item {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  background-color: #666;
+  font-size: 1rem;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.content .item-focus {
+  background-color: white;
+  transform: scale(1.08);
+  transition: all .2s ease-in-out;
+}
+
+.content .subscriptions.item {
+  width: 320px;
+  height: 180px;
+}
+
+.content .following.item {
+  width: 320px;
+  height: 180px;
+}
+
+.content .topGames.item {
+  width: 272px;
+  height: 380px;
+}
+
+.content .streams.item {
+  width: 320px;
+  height: 180px;
+}
+
+.content .subscriptions.hz-list {
+  height: 180px;
+}
+
+.content .following.hz-list {
+  height: 180px;
+}
+
+.content .topGames.hz-list {
+  height: 380px;
+}
+
+.content .streams.hz-list {
+  height: 180px;
+}
+
+.content .animate {
+  width: 25%;
+  padding-bottom: 0;
+  transition: padding-bottom 0.3s ease;
+}
+
+.content .placeholder {
+  width: 25%;
+  padding-bottom: calc(30% + 80px);
+}
+
+.contentgroup {
+  width: 100%;
+  z-index: 2;
+  opacity: 1;
+  transition: all .2s ease-in-out;
+}
+
+.contentgroup.fading-out {
+  opacity: 0;
+  display: none;
+}
+
+.mainbox {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 40px 40px 0 120px;
 }
 
 #sidebar {
@@ -54,10 +161,6 @@ html, body {
   font-size: 30px;
 }
 
-#sidebar.focused #icons {
-  opacity: 0;
-}
-
 #menu {
   width: 100%;
   height: 100%;
@@ -69,10 +172,6 @@ html, body {
   transition: opacity 0.5s;
   box-sizing: border-box;
   padding-top: 70px;
-}
-
-#sidebar.focused #menu {
-  opacity: 1;
 }
 
 #menu .item {
@@ -100,15 +199,16 @@ html, body {
   width: 40px;
 }
 
-#sidebar.focused #menu .item {
-  display: block;
+#sidebar.focused #icons {
+  opacity: 0;
 }
 
-.mainbox {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 40px 40px 0 120px;
+#sidebar.focused #menu {
+  opacity: 1;
+}
+
+#sidebar.focused #menu .item {
+  display: block;
 }
 
 #search-box-placeholder {
@@ -127,65 +227,4 @@ html, body {
 .search-box-placeholder-focus {
   color: black !important;
   background-color: white !important;
-}
-
-#content {
-  height: 100%;
-  position: relative;
-}
-
-#content .content {
-  white-space: nowrap;
-  font-size: 0;
-  overflow: hidden;
-  padding: 50px;
-  margin: -50px;
-}
-
-#content h1 {
-  font-size: 30px;
-  height: 80px;
-  padding: 0;
-  margin: 0;
-  line-height: 80px;
-}
-
-#content .item {
-  display: inline-block;
-  width: 200px;
-  height: 200px;
-  padding-bottom: 50px;
-  background-color: #666;
-  font-size: 1rem;
-  margin-right: 20px;
-  cursor: pointer;
-}
-
-#content .item-focus {
-  background-color: white;
-  transform: scale(1.08);
-  transition: all .2s ease-in-out;
-}
-
-#content .animate {
-  width: 25%;
-  padding-bottom: 0;
-  transition: padding-bottom 0.3s ease;
-}
-
-#content .placeholder {
-  width: 25%;
-  padding-bottom: calc(30% + 80px);
-}
-
-.contentgroup {
-  width: 100%;
-  z-index: 2;
-  opacity: 1;
-  transition: all .2s ease-in-out;
-}
-
-.contentgroup.fading-out {
-  opacity: 0;
-  display: none;
 }

@@ -69,7 +69,7 @@ export default class TTV4TV extends React.Component {
   render () {
     return (
       <Navigation>
-        <div id='container'>
+        <div className='container'>
           {this.state.isMediaPlayerEnabled ? () => {
             switch (this.state.media.type) {
               case 'collection':
@@ -102,7 +102,7 @@ export default class TTV4TV extends React.Component {
               <VerticalList navDefault>
                 <SearchBar />
                 <VerticalList
-                  id='content'
+                  className='content'
                   onBlur={this._handleVerticalListOnBlur}
                 >
                   {this.state.lists.map((list, key) =>

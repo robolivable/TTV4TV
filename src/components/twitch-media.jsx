@@ -11,13 +11,15 @@ export default class TwitchMedia extends React.Component {
   }
 
   render () {
+    const className = `${this.props.className} ` +
+                      `item${(this.state.active && ' item-focus') || ''}`
     return (
       <Focusable
         onFocus={this._handleFocusableOnFocus}
         onBlur={this._handleFocusableOnBlur}
       >
         <div
-          className={`item${(this.state.active && ' item-focus') || ''}`}
+          className={className}
           style={{
             backgroundImage: `url("${this.props.previewUrl}")`,
             backgroundSize: 'cover'

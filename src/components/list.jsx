@@ -34,10 +34,10 @@ export default class List extends React.Component {
   render () {
     return (
       <div className={`contentgroup${this.props.visible ? '' : ' fading-out'}`}>
-        <h1>{this.props.title}</h1>
-        <div id='content' ref={content => { this.content = content }}>
+        <h1 className='content-title'>{this.props.title}</h1>
+        <div className='medias' ref={content => { this.content = content }}>
           <HorizontalList
-            className='hz-list'
+            className={`${this.props.name} hz-list`}
             style={{ overflow: 'hidden', display: 'block' }}
             onFocus={this._handleHorizontalListOnFocus}
             onBlur={this._handleHorizontalListOnBlur}
@@ -49,6 +49,7 @@ export default class List extends React.Component {
               )
               return (
                 <TwitchMedia
+                  className={this.props.name}
                   key={key}
                   previewUrl={previewUrl}
                   onClick={this.props.onMediaClick(
@@ -78,7 +79,7 @@ export default class List extends React.Component {
       if (!items.length) {
         return
       }
-      const offsetWidth = items[0].offsetWidth + 20
+      const offsetWidth = items[0].offsetWidth + 80
       this.content.scrollLeft = offsetWidth * index
     }
 
