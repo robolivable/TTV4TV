@@ -75,6 +75,9 @@ export default class List extends React.Component {
 
     if (this.content) {
       const items = this.content.getElementsByClassName('item')
+      if (!items.length) {
+        return
+      }
       const offsetWidth = items[0].offsetWidth + 20
       this.content.scrollLeft = offsetWidth * index
     }

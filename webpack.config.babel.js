@@ -23,7 +23,6 @@ const config = {
       }
     ]
   },
-  devtool: 'source-map',
   context: __dirname,
   target: 'web',
   plugins: []

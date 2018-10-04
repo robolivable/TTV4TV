@@ -102,7 +102,7 @@ export default class TTV4TV extends React.Component {
               <VerticalList navDefault>
                 <SearchBar />
                 <VerticalList
-                  className='content'
+                  id='content'
                   onBlur={this._handleVerticalListOnBlur}
                 >
                   {this.state.lists.map((list, key) =>
