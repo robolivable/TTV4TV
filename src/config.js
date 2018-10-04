@@ -8,14 +8,14 @@ const MEDIA_TYPES = {
   following: 'following',
   streams: 'streams',
   subscribed: 'subscribed',
-  topGames: 'topGames',
+  topGames: 'topGames'
 }
 
 const MEDIA_PLAYER_TYPES = {
   following: 'channel',
   streams: 'channel',
   subscribed: 'channel',
-  topGames: null,
+  topGames: null
 }
 
 const TWITCH_PLAYER_ID = 'ttv4tv-player'
@@ -32,7 +32,7 @@ const Twitch = {
     topGames: '/games/top',
     streams: '/streams',
     user: '/user',
-    users: '/users',
+    users: '/users'
   },
   CLIENT_ID: 'lp9mi95ti4smw3c3ezxgakwd6dt65x',
   FORCE_VERIFY: false,
@@ -42,8 +42,8 @@ const Twitch = {
   SCOPES: [
     'channel_read',
     'user_read',
-    'user_subscriptions',
-  ],
+    'user_subscriptions'
+  ]
 }
 
 module.exports = {
@@ -54,5 +54,5 @@ module.exports = {
   PLAYER_INIT_VOLUME,
   PLAYER_INIT_WIDTH,
   Twitch,
-  TWITCH_PLAYER_ID,
+  TWITCH_PLAYER_ID
 }

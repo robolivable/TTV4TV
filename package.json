@@ -12,9 +12,10 @@
     "build": "webpack",
     "build-dev": "NODE_ENV=development npm run build",
     "build-prod": "cross-env NODE_ENV=production npm run build",
+    "jshint": "./node_modules/.bin/standard",
     "react-tv-cli": "WEBOS_CLI_TV_VERSION=4.0.0 react-tv-cli $@",
     "start-dev": "npm run build-dev && npm run react-tv-cli -- run-webos",
-    "start-dev-server": "webpack-dev-server --progress --colors",
+    "start-dev-server": "webpack-dev-server --inline --progress --colors",
     "start-webos": "npm run build-prod && npm run react-tv-cli -- run-webos",
     "test": "echo \"No tests currently defined\""
   },
@@ -34,6 +35,7 @@
     "cross-env": "^5.1.1",
     "jest": "^23.6.0",
     "react-tv-navigation": "^0.4.2",
+    "standard": "^12.0.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   }

@@ -18,14 +18,14 @@ class TwitchResource {
     this.authorization = auth
   }
 
-  async get (key='', directory='') {
-    return await (await fetch(
+  async get (key = '', directory = '') {
+    return (await fetch( // eslint-disable-line
       config.Twitch.URL + (directory || this.directory) + key,
       {
         headers: {
           Accept: config.Twitch.ACCEPT,
           'Client-ID': config.Twitch.CLIENT_ID,
-          Authorization: `${this.authorization.header}`,
+          Authorization: `${this.authorization.header}`
         }
       }
     )).json()
@@ -33,7 +33,7 @@ class TwitchResource {
 }
 
 class TwitchObject {
-  constructor ({ key='', dir='/', auth={} }, props={}) {
+  constructor ({ key = '', dir = '/', auth = {} }, props = {}) {
     this.key = key
     this.resource = new TwitchResource(dir, auth)
     this._properties = {}
@@ -50,15 +50,14 @@ class TwitchObject {
   async fetch () {
     this._properties = await this.resource.get(this.key)
     if (Object.keys(this._properties).length === 0) {
-      return this
+      return
     }
     this.properties = JSON.parse(JSON.stringify(this._properties))
-    return this
   }
 }
 
 class TwitchObjectCollection {
-  constructor (clazz, { key='', dir='/', auth={} }) {
+  constructor (clazz, { key = '', dir = '/', auth = {} }) {
     this.clazz = clazz
     this.key = key
     this.resource = new TwitchResource(dir, auth)
@@ -71,40 +70,40 @@ class TwitchObjectCollection {
 
   * iter () {
     for (const object of this.collection) {
-      yield new this.clazz(object._id, object)
+      yield new this.clazz(object._id, object) // eslint-disable-line
     }
   }
 }
 
 class Channel extends TwitchObject {
-  constructor (key='', props={}, auth={}) {
+  constructor (key = '', props = {}, auth = {}) {
     const dir = config.Twitch.API_V5 + config.Twitch.DIRS.channels
     super({ key, dir, auth }, props)
   }
 }
 
 class Game extends TwitchObject {
-  constructor (key='', props={}, auth={}) {
+  constructor (key = '', props = {}, auth = {}) {
     const dir = config.Twitch.API_NEW + config.Twitch.DIRS.games
     super({ key, dir, auth }, props)
   }
 }
 
 class Stream extends TwitchObject {
-  constructor (key='', props={}, auth={}) {
+  constructor (key = '', props = {}, auth = {}) {
     const dir = config.Twitch.API_V5 + config.Twitch.DIRS.streams
     super({ key, dir, auth }, props)
   }
 }
 
 class User extends TwitchObject {
-  constructor (key='', props={}, auth={}) {
+  constructor (key = '', props = {}, auth = {}) {
     const dir = config.Twitch.API_V5 + config.Twitch.DIRS.user
     super({ key, dir, auth }, props)
   }
 
   async emotes () {
-    return await this.resource.get('', `/users/${this.get('_id')}/emotes`)
+    return this.resource.get('', `/users/${this.get('_id')}/emotes`)
   }
 
   async follows () {
@@ -114,15 +113,15 @@ class User extends TwitchObject {
   }
 }
 
-class Channels extends TwitchObjectCollection {
-  constructor (key='', auth={}) {
+class Channels extends TwitchObjectCollection { // eslint-disable-line
+  constructor (key = '', auth = {}) {
     const dir = config.Twitch.API_V5 + config.Twitch.DIRS.channels
     super(Channel, { key, dir, auth })
   }
 }
 
 class Streams extends TwitchObjectCollection {
-  constructor (key='', auth={}) {
+  constructor (key = '', auth = {}) {
     const dir = config.Twitch.API_V5 + config.Twitch.DIRS.streams
     super(Stream, { key, dir, auth })
   }
@@ -133,7 +132,7 @@ class Streams extends TwitchObjectCollection {
 }
 
 class TopGames extends TwitchObjectCollection {
-  constructor (key='', auth={}) {
+  constructor (key = '', auth = {}) {
     const dir = config.Twitch.API_V5 + config.Twitch.DIRS.topGames
     super(Game, { key, dir, auth })
   }
