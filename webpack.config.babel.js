@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const htmlWebpackPlugin = require('html-webpack-plugin')
 
 const sourcePath = path.join(__dirname, 'src')
 
@@ -14,18 +15,32 @@ const config = {
     rules: [
       {
         test: /\.(js|jsx)$/,
+        include: sourcePath,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        include: sourcePath,
         options: {
           presets: ['react']
         }
-      }
+      },
+//      {
+//        loader: 'expose-loader?React'
+//      }
     ]
   },
   context: __dirname,
+//  devtool: 'source-map',
+//  devServer: {
+//    contentBase: './src/app',
+//    progress: true,
+//    stats: 'errors-only'
+//  },
   target: 'web',
-  plugins: []
+  plugins: [
+//    new htmlWebpackPlugin({
+//      title: 'TTV4TV',
+//      hash: true
+//    })
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {

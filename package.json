@@ -21,9 +21,11 @@
   },
   "license": "MIT",
   "dependencies": {
+    "expose-loader": "^0.7.5",
+    "html-webpack-plugin": "^3.2.0",
     "react": "^16.2.0",
-    "react-tv": "0.3.4",
     "react-key-navigation": "0.0.9",
+    "react-tv": "0.3.4",
     "react-tv-cli": "^0.3.4"
   },
   "devDependencies": {
