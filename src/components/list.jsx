@@ -98,12 +98,12 @@ export default class List extends React.Component {
     switch (type) {
       case 'subscribed':
         return {
-          id: item.get('channel')._id,
+          id: item.get('channel').display_name,
           previewUrl: item.get('channel').logo
         }
       case 'followed':
         return {
-          id: item.get('channel')._id,
+          id: item.get('channel').display_name,
           previewUrl: item.get('channel').logo
         }
       case 'topGames':
@@ -113,7 +113,7 @@ export default class List extends React.Component {
         }
       case 'streams':
         return {
-          id: item.get('channel')._id,
+          id: item.get('channel').display_name,
           previewUrl: item.get('preview').medium
         }
       default:

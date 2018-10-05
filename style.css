@@ -228,3 +228,9 @@ html, body {
   color: black !important;
   background-color: white !important;
 }
+
+#ttv4tv-player iframe {
+  margin-top: -20px;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+}

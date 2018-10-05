@@ -75,23 +75,20 @@ export default class TTV4TV extends React.Component {
               case 'collection':
                 return (
                   <TwitchPlayer
-                    onClose={this._handleTwitchPlayerOnClose}
-                    collection={this.state.media.id}
+                    options={{colletion: this.state.media.id}}
                   />
                 )
               case 'video':
                 return (
                   <TwitchPlayer
-                    onClose={this._handleTwitchPlayerOnClose}
-                    video={this.state.media.id}
+                    options={{video: this.state.media.id}}
                   />
                 )
               case 'channel':
               default:
                 return (
                   <TwitchPlayer
-                    onClose={this._handleTwitchPlayerOnClose}
-                    channel={this.state.media.id}
+                    options={{channel: this.state.media.id}}
                   />
                 )
             }
