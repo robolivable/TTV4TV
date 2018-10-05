@@ -24,8 +24,10 @@ export default class List extends React.Component {
         this.content.clientWidth
       ) * this.content.clientWidth
     ) + this.content.clientWidth + 20
-    const hzListElements = this.content.getElementsByClassName('hz-list')
-    if (!width || !hzListElements[0]) {
+    const hzListElements = this.content.getElementsByClassName(
+      `${this.props.name} hz-list`
+    )
+    if (Number.isNaN(width) || !hzListElements.length) {
       return
     }
     hzListElements[0].style.width = `${width}px`
@@ -38,7 +40,7 @@ export default class List extends React.Component {
         <div className='medias' ref={content => { this.content = content }}>
           <HorizontalList
             className={`${this.props.name} hz-list`}
-            style={{ overflow: 'hidden', display: 'block' }}
+            style={{ display: 'block' }}
             onFocus={this._handleHorizontalListOnFocus}
             onBlur={this._handleHorizontalListOnBlur}
           >
@@ -52,8 +54,8 @@ export default class List extends React.Component {
                   className={this.props.name}
                   key={key}
                   previewUrl={previewUrl}
-                  onClick={this.props.onMediaClick(
-                    config.MEDIA_PLAYER_TYPES[this.props.title],
+                  onMediaClick={this.props.onMediaClick(
+                    config.MEDIA_PLAYER_TYPES[this.props.name],
                     id
                   )}
                 />
@@ -75,12 +77,14 @@ export default class List extends React.Component {
     }
 
     if (this.content) {
-      const items = this.content.getElementsByClassName('item')
+      const items = this.content.getElementsByClassName(
+        `${this.props.name} item`
+      )
       if (!items.length) {
         return
       }
-      const offsetWidth = items[0].offsetWidth + 80
-      this.content.scrollLeft = offsetWidth * index
+      const offsetWidth = items[0].offsetWidth + 20
+      this.content.style.marginLeft = `${(offsetWidth * index * -1) - 50}px`
     }
 
     this._lastFocus = index

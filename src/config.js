@@ -15,7 +15,7 @@ const MEDIA_PLAYER_TYPES = {
   following: 'channel',
   streams: 'channel',
   subscribed: 'channel',
-  topGames: null
+  topGames: 'game'
 }
 
 const TWITCH_PLAYER_ID = 'ttv4tv-player'

@@ -20,6 +20,7 @@ export default class TwitchMedia extends React.Component {
       >
         <div
           className={className}
+          onClick={this.props.onMediaClick}
           style={{
             backgroundImage: `url("${this.props.previewUrl}")`,
             backgroundSize: 'cover'

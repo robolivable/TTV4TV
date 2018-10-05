@@ -13,6 +13,10 @@ export default class TwitchPlayer extends React.Component {
   }
 
   render () {
-    return <div id={config.TWITCH_PLAYER_ID} />
+    return (
+      <div
+        id={config.TWITCH_PLAYER_ID}
+      />
+    )
   }
 }

@@ -70,7 +70,7 @@ export default class TTV4TV extends React.Component {
     return (
       <Navigation>
         <div className='container'>
-          {this.state.isMediaPlayerEnabled ? () => {
+          {this.state.isMediaPlayerEnabled ? (() => {
             switch (this.state.media.type) {
               case 'collection':
                 return (
@@ -95,7 +95,7 @@ export default class TTV4TV extends React.Component {
                   />
                 )
             }
-          } : null}
+          })() : null}
           <HorizontalList>
             <SideBar />
             <div className='mainbox'>
@@ -128,13 +128,19 @@ export default class TTV4TV extends React.Component {
   }
 
   _handleMediaClick (type, id) {
-    if (!type) {
-      return
+    return () => {
+      if (!type) {
+        return
+      }
+      if (type === 'game') {
+        console.log('TODO: handle game')
+        return
+      }
+      this.setState({
+        isMediaPlayerEnabled: true,
+        media: { type, id }
+      })
     }
-    return () => this.setState({
-      isMediaPlayerEnabled: true,
-      media: { type, id }
-    })
   }
 
   _handleListOnFocus (activeFocus) {
