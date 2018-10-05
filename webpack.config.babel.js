@@ -1,6 +1,7 @@
+/* eslint-disable */
 const path = require('path')
 const webpack = require('webpack')
-const htmlWebpackPlugin = require('html-webpack-plugin')
+// const htmlWebpackPlugin = require('html-webpack-plugin')
 
 const sourcePath = path.join(__dirname, 'src')
 
@@ -21,7 +22,7 @@ const config = {
         options: {
           presets: ['react']
         }
-      },
+      }
 //      {
 //        loader: 'expose-loader?React'
 //      }
@@ -57,3 +58,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = config
+/* eslint-enable */

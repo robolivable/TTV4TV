@@ -36,7 +36,7 @@ export default class TTV4TV extends React.Component {
       return
     }
 
-    document.addEventListener("keydown", this._handleOnKeyDown, false)
+    document.addEventListener('keydown', this._handleOnKeyDown, false)
 
     const lists = await Promise.all([
       // async () => ({ name: 'subscribed', val: await this.twitch.subscribed()}),
@@ -77,20 +77,20 @@ export default class TTV4TV extends React.Component {
               case 'collection':
                 return (
                   <TwitchPlayer
-                    options={{colletion: this.state.media.id}}
+                    options={{ colletion: this.state.media.id }}
                   />
                 )
               case 'video':
                 return (
                   <TwitchPlayer
-                    options={{video: this.state.media.id}}
+                    options={{ video: this.state.media.id }}
                   />
                 )
               case 'channel':
               default:
                 return (
                   <TwitchPlayer
-                    options={{channel: this.state.media.id}}
+                    options={{ channel: this.state.media.id }}
                   />
                 )
             }
@@ -156,7 +156,7 @@ export default class TTV4TV extends React.Component {
       case (0x1CD):
         e.preventDefault()
         this.setState({ isMediaPlayerEnabled: false, media: null })
-      default:
+      default: // eslint-disable-line
         break
     }
   }
