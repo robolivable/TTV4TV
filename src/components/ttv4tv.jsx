@@ -155,8 +155,10 @@ export default class TTV4TV extends React.Component {
       case (0x1B):
       case (0x1CD):
         e.preventDefault()
+        e.stopPropagation()
         this.setState({ isMediaPlayerEnabled: false, media: null })
-      default: // eslint-disable-line
+        break
+      default:
         break
     }
   }
