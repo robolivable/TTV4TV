@@ -10,6 +10,19 @@ import Navigation, {
   VerticalList
 } from 'react-key-navigation'
 
+const CONTROLLER_BACK = 0x1CD
+const CONTROLLER_BLUE = 0x196
+const CONTROLLER_DOWN = 0x28
+const CONTROLLER_GREEN = 0x194
+const CONTROLLER_LEFT = 0x25
+const CONTROLLER_OK = 0x0D
+const CONTROLLER_RED = 0x193
+const CONTROLLER_RIGHT = 0x27
+const CONTROLLER_UP = 0x26
+const CONTROLLER_YELLOW = 0x195
+
+const KEYBOARD_ESCAPE = 0x1B
+
 export default class TTV4TV extends React.Component {
   constructor (props) {
     super(props)
@@ -152,12 +165,21 @@ export default class TTV4TV extends React.Component {
 
   _handleOnKeyDown (e) {
     switch (e.keyCode) {
-      case (0x1B):
-      case (0x1CD):
+      case (KEYBOARD_ESCAPE):
+      case (CONTROLLER_BACK):
         e.preventDefault()
         e.stopPropagation()
         this.setState({ isMediaPlayerEnabled: false, media: null })
         break
+      case (CONTROLLER_LEFT):
+      case (CONTROLLER_UP):
+      case (CONTROLLER_RIGHT):
+      case (CONTROLLER_DOWN):
+      case (CONTROLLER_OK):
+      case (CONTROLLER_RED):
+      case (CONTROLLER_GREEN):
+      case (CONTROLLER_YELLOW):
+      case (CONTROLLER_BLUE):
       default:
         break
     }
