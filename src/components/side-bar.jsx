@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 import React from 'react'
 
 import { Focusable, VerticalList } from 'react-key-navigation'
@@ -66,7 +67,7 @@ export default class SideBar extends React.Component {
             onFocus={this._handleVirticalListOnFocus}
             onBlur={this._handleVirticalListOnBlur}
             focusId='sidebar'
-            retainLastFocus={true}
+            retainLastFocus
           >
             <SideBarButton
               icon='user'
@@ -75,9 +76,9 @@ export default class SideBar extends React.Component {
             </SideBarButton>
             <SideBarButton icon='search'>Search</SideBarButton>
             <SideBarButton icon='home'>Home</SideBarButton>
-            {this.state.isLoggedIn ?
-              <SideBarButton icon='star'>Subscribed</SideBarButton>
-            : null}
+            {this.state.isLoggedIn ? <SideBarButton icon='star'>
+              Subscribed
+            </SideBarButton> : null}
           </VerticalList>
         </div>
       </div>
@@ -87,9 +88,8 @@ export default class SideBar extends React.Component {
   _handleVirticalListOnFocus () {
     this.setState({ activeFocus: true })
   }
-  
+
   _handleVirticalListOnBlur () {
     this.setState({ activeFocus: false })
   }
-  
 }

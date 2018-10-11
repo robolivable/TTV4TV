@@ -19,6 +19,11 @@
     "start-webos": "npm run build-prod && npm run react-tv-cli -- run-webos",
     "test": "echo \"No tests currently defined\""
   },
+  "standard": {
+    "ignore": [
+      "packages"
+    ]
+  },
   "license": "MIT",
   "dependencies": {
     "expose-loader": "^0.7.5",
