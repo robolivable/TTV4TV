@@ -1,0 +1,3 @@
+[submodule "packages/react-key-navigation"]
+	path = packages/react-key-navigation
+	url = https://github.com/robolivable/react-key-navigation.git
