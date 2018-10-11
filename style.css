@@ -7,11 +7,32 @@ html, body {
   overflow: hidden;
 }
 
+h1 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 45px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+}
+
+h4 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 100;
+  line-height: 80px;
+}
+
 :focus {
   outline: 1;
 }
 
-.content-title {
+.content-header {
+  display: -webkit-inline-box;
+}
+
+.content-title, .content-caption {
   color: #95a0ff;
 }
 
@@ -32,12 +53,16 @@ html, body {
   margin: -50px;
 }
 
-.content h1 {
-  font-size: 30px;
-  height: 80px;
+.content h1, h4 {
   padding: 0;
   margin: 0;
-  line-height: 80px;
+  line-height: 140px;
+  height: 100px;
+}
+
+.content h4 {
+  padding-left: 25px;
+  margin-top: 5px;
 }
 
 .content .item {

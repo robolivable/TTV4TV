@@ -186,6 +186,14 @@ class Twitch {
     await streams.fetch()
     return Array.from(streams.iter())
   }
+
+  async ps4Streams () {
+    return [] // TODO: fetch PS4 streams
+  }
+
+  async xboxOneStreams () {
+    return [] // TODO: fetch XBOX streams
+  }
 }
 
 module.exports = Twitch

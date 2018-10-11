@@ -52,22 +52,59 @@ export default class TTV4TV extends React.Component {
     document.addEventListener('keydown', this._handleOnKeyDown, false)
 
     const lists = await Promise.all([
-      // async () => ({ name: 'subscribed', val: await this.twitch.subscribed()}),
       (async () => {
         const val = await this.twitch.subscribed()
-        return { name: 'subsriptions', namePretty: 'Subscriptions', val }
+        return {
+          name: 'subsriptions',
+          namePretty: 'Subscriptions',
+          caption: 'Channels you are subscribed to',
+          val
+        }
       })(),
       (async () => {
         const val = await this.twitch.following()
-        return { name: 'following', namePretty: 'Following', val }
+        return {
+          name: 'following',
+          namePretty: 'Following',
+          caption: 'Channels you follow',
+          val
+        }
       })(),
       (async () => {
         const val = await this.twitch.topGames()
-        return { name: 'topGames', namePretty: 'Top Games', val }
+        return {
+          name: 'topGames',
+          namePretty: 'Featured Games',
+          caption: 'Games people are watching now',
+          val
+        }
       })(),
       (async () => {
         const val = await this.twitch.streams()
-        return { name: 'streams', namePretty: 'Live Streams', val }
+        return {
+          name: 'streams',
+          namePretty: 'Top Live Channels',
+          caption: 'Broadcasters people are watching right now',
+          val
+        }
+      })(),
+      (async () => {
+        const val = await this.twitch.ps4Streams()
+        return {
+          name: 'ps4Streams',
+          namePretty: 'Top PS4 Channels',
+          caption: 'Channels broadcasted from Playstation 4',
+          val
+        }
+      })(),
+      (async () => {
+        const val = await this.twitch.xboxOneStreams()
+        return {
+          name: 'xboxOneStreams',
+          namePretty: 'Top Xbox One Channels',
+          caption: 'Channels broadcasted from Xbox One',
+          val
+        }
       })()
     ])
 
@@ -77,6 +114,8 @@ export default class TTV4TV extends React.Component {
       following: lists[1].val,
       topGames: lists[2].val,
       streams: lists[3].val,
+      ps4Streams: lists[3].val,
+      xboxOneStreams: lists[3].val,
       lists
     })
   }
@@ -121,6 +160,7 @@ export default class TTV4TV extends React.Component {
                     <List
                       key={key}
                       title={list.namePretty}
+                      caption={list.caption}
                       name={list.name}
                       medias={list.val || []}
                       onFocus={this._handleListOnFocus(key)}

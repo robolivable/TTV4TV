@@ -36,7 +36,10 @@ export default class List extends React.Component {
   render () {
     return (
       <div className={`contentgroup${this.props.visible ? '' : ' fading-out'}`}>
-        <h1 className='content-title'>{this.props.title}</h1>
+        <div className='content-header'>
+          <h1 className='content-title'>{this.props.title}</h1>
+          <h4 className='content-caption'>{this.props.caption}</h4>
+        </div>
         <div className='medias' ref={content => { this.content = content }}>
           <HorizontalList
             className={`${this.props.name} hz-list`}
