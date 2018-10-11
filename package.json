@@ -21,6 +21,7 @@
   },
   "standard": {
     "ignore": [
+      "build",
       "packages"
     ]
   },
