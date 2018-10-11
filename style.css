@@ -211,7 +211,7 @@ html, body {
   display: block;
 }
 
-#search-box-placeholder {
+.search-box-placeholder {
   width: 70%;
   height: 50px;
   line-height: 50px;
@@ -223,8 +223,27 @@ html, body {
   color: #aaa;
 }
 
-#search-box-placeholder:hover,
-.search-box-placeholder-focus {
+.search-box-placeholder input {
+  background-color: #666;
+  display: inline;
+  position: absolute;
+  height: inherit;
+  width: inherit;
+  margin-left: 15px;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  font-size: -webkit-xxx-large;
+}
+
+.search-box-placeholder input:focus {
+  outline: none;
+}
+
+.search-box-placeholder:hover,
+.search-box-placeholder.focus,
+.search-box-placeholder input:focus,
+.search-box-placeholder input:hover {
   color: black !important;
   background-color: white !important;
 }
