@@ -10,5 +10,8 @@
   <body>
     <div id="root"></div>
     <script src="bundle.js"></script>
+    <script type="text/javascript">
+      window.onerror = (message, source, lineno, colno, error) => console.error(message, lineno, colno, error)
+    </script>
   </body>
 </html>
