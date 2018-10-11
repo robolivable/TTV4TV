@@ -17,10 +17,12 @@ const config = {
       {
         test: /\.(js|jsx)$/,
         include: sourcePath,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['react']
+        exclude: /(node_modules|build)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['env', 'react']
+          }
         }
       }
 //      {
