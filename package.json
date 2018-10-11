@@ -23,8 +23,9 @@
   "dependencies": {
     "expose-loader": "^0.7.5",
     "html-webpack-plugin": "^3.2.0",
-    "react": "^16.2.0",
-    "react-key-navigation": "0.0.9",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-key-navigation": "file:packages/react-key-navigation",
     "react-tv": "0.3.4",
     "react-tv-cli": "^0.3.4"
   },
@@ -36,7 +37,6 @@
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.1.1",
     "jest": "^23.6.0",
-    "react-tv-navigation": "^0.4.2",
     "standard": "^12.0.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
