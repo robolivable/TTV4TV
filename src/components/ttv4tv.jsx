@@ -1,4 +1,4 @@
-import List from './list'
+import MediaContent from './media-content'
 import React from 'react'
 import SearchBar from './search-bar'
 import SideBar from './side-bar'
@@ -137,18 +137,17 @@ export default class TTV4TV extends React.Component {
                   onBlur={this._handleVerticalListOnBlur}
                 >
                   {this.state.lists.map((list, key) =>
-                    <List
+                    !!list.val && !!list.val.length ? <MediaContent
                       key={key}
                       title={list.namePretty}
                       caption={list.caption}
                       name={list.name}
                       medias={list.val || []}
                       onFocus={this._handleListOnFocus(key)}
-                      visible={!!list.val && !!list.val.length &&
-                               (this.state.activeFocus === null ||
+                      visible={(this.state.activeFocus === null ||
                                key >= this.state.activeFocus)}
                       onMediaClick={this._handleMediaClick}
-                    />
+                    /> : null
                   )}
                 </VerticalList>
               </VerticalList>

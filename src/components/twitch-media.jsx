@@ -23,9 +23,25 @@ export default class TwitchMedia extends React.Component {
           onClick={this.props.onMediaClick}
           style={{
             backgroundImage: `url("${this.props.previewUrl}")`,
-            backgroundSize: 'cover'
+            backgroundSize: 'cover',
+            color: 'white'
           }}
-        />
+        >
+          <div className='twitch-media-copy'>
+            <div className='twitch-media-name'>
+              {this.props.name}
+            </div>
+            <div className='twitch-media-statusText'>
+              {this.props.statusText}
+            </div>
+            <div className='twitch-media-gameTitle'>
+              {this.props.gameTitle}
+            </div>
+            <div className='twitch-media-viewCount'>
+              {new Intl.NumberFormat('en').format(this.props.viewCount)} viewers
+            </div>
+          </div>
+        </div>
       </Focusable>
     )
   }

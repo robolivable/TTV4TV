@@ -99,6 +99,38 @@ h4 {
 .content .streams.item {
   width: 320px;
   height: 180px;
+  margin-bottom: 20px;
+  white-space: pre-line;
+  overflow: -webkit-paged-x;
+}
+
+.content .item .twitch-media-copy {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  text-shadow: 1px 1px 1px #000;
+  padding-top: 3px;
+  padding-left: 5px;
+}
+
+.content .item .twitch-media-name {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.content .item .twitch-media-statusText {
+  font-size: 10px;
+  font-weight: 100;
+}
+
+.content .item .twitch-media-gameTitle {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.content .item .twitch-media-viewCount {
+  font-size: 10px;
+  font-weight: 400;
 }
 
 .content .subscriptions.hz-list {
