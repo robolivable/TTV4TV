@@ -61,7 +61,6 @@ export default class SideBar extends React.Component {
           <div><span className='fa fa-user' /></div>
           <div><span className='fa fa-home' /></div>
           <div><span className='fa fa-gamepad' /></div>
-          <div><span className='fa fa-film' /></div>
           <div><span className='fa fa-ellipsis-v' /></div>
         </div>
         <div className='menu'>
