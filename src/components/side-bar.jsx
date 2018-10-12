@@ -58,8 +58,10 @@ export default class SideBar extends React.Component {
     return (
       <div className={`sidebar${this.state.activeFocus ? ' focused' : ''}`}>
         <div className='icons'>
+          <div><span className='fa fa-user' /></div>
           <div><span className='fa fa-home' /></div>
-          <div><span className='fa fa-star' /></div>
+          <div><span className='fa fa-gamepad' /></div>
+          <div><span className='fa fa-film' /></div>
           <div><span className='fa fa-ellipsis-v' /></div>
         </div>
         <div className='menu'>
@@ -69,16 +71,18 @@ export default class SideBar extends React.Component {
             focusId='sidebar'
             retainLastFocus
           >
-            <SideBarButton
-              icon='user'
-            >
+            <SideBarButton icon='user'>
               {this.state.isLoggedIn ? 'Logout' : 'Login'}
             </SideBarButton>
-            <SideBarButton icon='search'>Search</SideBarButton>
             <SideBarButton icon='home'>Home</SideBarButton>
             {this.state.isLoggedIn ? <SideBarButton icon='star'>
               Subscribed
             </SideBarButton> : null}
+            {this.state.isLoggedIn ? <SideBarButton icon='heart'>
+              Following
+            </SideBarButton> : null}
+            <SideBarButton icon='gamepad'>Browse Games</SideBarButton>
+            <SideBarButton icon='film'>Browse Streams</SideBarButton>
           </VerticalList>
         </div>
       </div>
