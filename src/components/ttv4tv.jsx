@@ -87,24 +87,6 @@ export default class TTV4TV extends React.Component {
           caption: 'Broadcasters people are watching right now',
           val
         }
-      })(),
-      (async () => {
-        const val = await this.twitch.ps4Streams()
-        return {
-          name: 'ps4Streams',
-          namePretty: 'Top PS4 Channels',
-          caption: 'Channels broadcasted from Playstation 4',
-          val
-        }
-      })(),
-      (async () => {
-        const val = await this.twitch.xboxOneStreams()
-        return {
-          name: 'xboxOneStreams',
-          namePretty: 'Top Xbox One Channels',
-          caption: 'Channels broadcasted from Xbox One',
-          val
-        }
       })()
     ])
 
@@ -114,8 +96,6 @@ export default class TTV4TV extends React.Component {
       following: lists[1].val,
       topGames: lists[2].val,
       streams: lists[3].val,
-      ps4Streams: lists[3].val,
-      xboxOneStreams: lists[3].val,
       lists
     })
   }
