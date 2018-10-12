@@ -3,11 +3,7 @@ import utils from '../utils'
 import React from 'react'
 import TwitchMedia from './twitch-media'
 
-import Navigation, {
-  Focusable,
-  Grid,
-  HorizontalList
-} from 'react-key-navigation'
+import { Grid, HorizontalList } from 'react-key-navigation'
 
 const FOCUSABLE_GRID = 'grid'
 const FOCUSABLE_LIST = 'list'
@@ -121,17 +117,17 @@ export default class MediaContent extends React.Component {
         </div>
         <div className='medias' ref={content => { this.content = content }}>
           {this.props.name !== 'streams'
-          ? <MediaListContainer
+            ? <MediaListContainer
               _handleMediaOnFocus={this._handleMediaOnFocus(FOCUSABLE_LIST)}
               _handleMediaOnBlur={this._handleMediaOnBlur}
               {...this.props}
             />
-          : <MediaGridContainer
+            : <MediaGridContainer
               _handleMediaOnFocus={this._handleMediaOnFocus(FOCUSABLE_GRID)}
               _handleMediaOnBlur={this._handleMediaOnBlur}
               dims={[320, 180]}
               {...this.props}
-          />}
+            />}
         </div>
       </div>
     )
