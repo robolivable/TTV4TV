@@ -56,6 +56,9 @@ export default class TTV4TV extends React.Component {
         const val = await this.twitch.subscribed()
         return {
           name: 'subsriptions',
+          type: 'hzlist',
+          dims: [320, 180],
+          mediaMargin: 0,
           namePretty: 'Subscriptions',
           caption: 'Channels you are subscribed to',
           val
@@ -65,6 +68,9 @@ export default class TTV4TV extends React.Component {
         const val = await this.twitch.following()
         return {
           name: 'following',
+          type: 'hzlist',
+          dims: [320, 180],
+          mediaMargin: 0,
           namePretty: 'Following',
           caption: 'Channels you follow',
           val
@@ -74,6 +80,9 @@ export default class TTV4TV extends React.Component {
         const val = await this.twitch.topGames()
         return {
           name: 'topGames',
+          type: 'hzlist',
+          dims: [272, 380],
+          mediaMargin: 0,
           namePretty: 'Featured Games',
           caption: 'Games people are watching now',
           val
@@ -83,6 +92,9 @@ export default class TTV4TV extends React.Component {
         const val = await this.twitch.streams()
         return {
           name: 'streams',
+          type: 'grid',
+          dims: [320, 180],
+          mediaMargin: 40,
           namePretty: 'Top Live Channels',
           caption: 'Broadcasters people are watching right now',
           val
@@ -142,6 +154,9 @@ export default class TTV4TV extends React.Component {
                       title={list.namePretty}
                       caption={list.caption}
                       name={list.name}
+                      type={list.type}
+                      dims={list.dims}
+                      mediaMargin={list.mediaMargin}
                       medias={list.val || []}
                       onFocus={this._handleListOnFocus(key)}
                       visible={(this.state.activeFocus === null ||

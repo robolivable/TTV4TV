@@ -6,11 +6,13 @@ import TwitchMedia from './twitch-media'
 import { Grid, HorizontalList } from 'react-key-navigation'
 
 const FOCUSABLE_GRID = 'grid'
-const FOCUSABLE_LIST = 'list'
+const FOCUSABLE_LIST = 'hzlist'
 
 class MediaGridContainer extends React.Component {
   render () {
-    const columns = Math.floor(window.innerWidth / this.props.dims[0])
+    const columns = Math.floor(
+      window.innerWidth / (this.props.dims[0] + this.props.mediaMargin)
+    )
     const rows = Math.ceil(this.props.medias.length / columns)
     return (
       <Grid
@@ -84,8 +86,10 @@ class MediaListContainer extends React.Component {
 export default class MediaContent extends React.Component {
   constructor (...args) {
     super(...args)
-    this._handleMediaOnFocus = this._handleMediaOnFocus.bind(this)
-    this._handleMediaOnBlur = this._handleMediaOnBlur.bind(this)
+    this._handleListMediaOnFocus = this._handleListMediaOnFocus.bind(this)
+    this._handleListMediaOnBlur = this._handleListMediaOnBlur.bind(this)
+    this._handleGridMediaOnFocus = this._handleGridMediaOnFocus.bind(this)
+    this._handleGridMediaOnBlur = this._handleGridMediaOnBlur.bind(this)
     this._lastFocus = null
   }
 
@@ -116,49 +120,73 @@ export default class MediaContent extends React.Component {
           <h4 className='content-caption'>{this.props.caption}</h4>
         </div>
         <div className='medias' ref={content => { this.content = content }}>
-          {this.props.name !== 'streams'
-            ? <MediaListContainer
-              _handleMediaOnFocus={this._handleMediaOnFocus(FOCUSABLE_LIST)}
-              _handleMediaOnBlur={this._handleMediaOnBlur}
-              {...this.props}
-            />
-            : <MediaGridContainer
-              _handleMediaOnFocus={this._handleMediaOnFocus(FOCUSABLE_GRID)}
-              _handleMediaOnBlur={this._handleMediaOnBlur}
-              dims={[320, 180]}
-              {...this.props}
-            />}
+          {(() => {
+            switch (this.props.type) {
+              case (FOCUSABLE_LIST):
+                return (
+                  <MediaListContainer
+                    _handleMediaOnFocus={this._handleListMediaOnFocus}
+                    _handleMediaOnBlur={this._handleListMediaOnBlur}
+                    {...this.props}
+                  />
+                )
+              case (FOCUSABLE_GRID):
+                return (
+                  <MediaGridContainer
+                    _handleMediaOnFocus={this._handleGridMediaOnFocus}
+                    _handleMediaOnBlur={this._handleGridMediaOnBlur}
+                    {...this.props}
+                  />
+                )
+              default:
+                return null
+            }
+          })()}
         </div>
       </div>
     )
   }
 
-  _handleMediaOnFocus (type) {
-    return (index) => {
-      if (this._lastFocus === index) {
+  _handleListMediaOnFocus (index) {
+    if (this._lastFocus === index) {
+      return
+    }
+
+    if (this.props.onFocus) {
+      this.props.onFocus()
+    }
+
+    if (this.content) {
+      const items = this.content.getElementsByClassName(
+        `${this.props.name} item`
+      )
+      if (!items.length) {
         return
       }
-
-      if (this.props.onFocus) {
-        this.props.onFocus()
-      }
-
-      if (this.content && type === FOCUSABLE_LIST) {
-        const items = this.content.getElementsByClassName(
-          `${this.props.name} item`
-        )
-        if (!items.length) {
-          return
-        }
-        const offsetWidth = items[0].offsetWidth + 20
-        this.content.style.marginLeft = `${(offsetWidth * index * -1) - 50}px`
-      }
-
-      this._lastFocus = index
+      const offsetWidth = items[0].offsetWidth + 20
+      this.content.style.marginLeft = `${(offsetWidth * index * -1) - 50}px`
     }
+
+    this._lastFocus = index
   }
 
-  _handleMediaOnBlur () {
+  _handleListMediaOnBlur () {
+    this._lastFocus = null
+  }
+
+  _handleGridMediaOnFocus (index) {
+    if (this._lastFocus === index) {
+      return
+    }
+
+    if (this.props.onFocus) {
+      this.props.onFocus()
+    }
+
+    this._lastFocus = index
+  }
+
+  _handleGridMediaOnBlur () {
     this._lastFocus = null
   }
 }
