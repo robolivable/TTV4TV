@@ -30,6 +30,7 @@ export default class TTV4TV extends React.Component {
     this._handleListOnFocus = this._handleListOnFocus.bind(this)
     this._handleVerticalListOnBlur = this._handleVerticalListOnBlur.bind(this)
     this._handleOnKeyDown = this._handleOnKeyDown.bind(this)
+    this.setSearchBarIsVisible = this.setSearchBarIsVisible.bind(this)
     this.state = {
       activeFocus: null,
       isMediaPlayerEnabled: false,
@@ -39,7 +40,8 @@ export default class TTV4TV extends React.Component {
       following: [],
       streams: [],
       topGames: [],
-      lists: []
+      lists: [],
+      searchBarIsVisible: true
     }
     this.twitch = new Twitch()
   }
@@ -143,7 +145,9 @@ export default class TTV4TV extends React.Component {
             <SideBar />
             <div className='mainbox'>
               <VerticalList navDefault>
-                <SearchBar />
+                <SearchBar
+                  visible={this.state.searchBarIsVisible}
+                />
                 <VerticalList
                   className='content'
                   onBlur={this._handleVerticalListOnBlur}
@@ -162,6 +166,7 @@ export default class TTV4TV extends React.Component {
                       visible={(this.state.activeFocus === null ||
                                key >= this.state.activeFocus)}
                       onMediaClick={this._handleMediaClick}
+                      setSearchBarIsVisible={this.setSearchBarIsVisible}
                     /> : null
                   )}
                 </VerticalList>
@@ -171,6 +176,10 @@ export default class TTV4TV extends React.Component {
         </div>
       </Navigation>
     )
+  }
+
+  setSearchBarIsVisible (searchBarIsVisible) {
+    this.setState({ searchBarIsVisible })
   }
 
   _handleMediaClick (type, id) {

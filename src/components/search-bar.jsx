@@ -18,31 +18,37 @@ export default class SearchBar extends React.Component {
 
   render () {
     return (
-      <Focusable
-        onFocus={this._handleSearchOnFocus}
-        onBlur={this._handleSearchOnBlur}
-        onEnterDown={this._handleSearchOnEnterDown}
-        navDefault
+      <div className='content'
+        style={{ 'margin-top': this.props.visible ? '0px' : '-70px' }}
       >
-        <div className={
-          `search-box-placeholder${this.state.activeFocus ? ' focus' : ''}`
-        }>
-          <i className='fa fa-search' />
-          <input
-            id='search-bar-input'
-            ref={element => { this.searchBarInputRef = element }}
-            type='text'
-            value={this.state.searchValue}
-            style={this.state.activeFocus ? { backgroundColor: 'white' } : {}}
-            onKeyDown={`((e) => {
-              sessionStorage.setItem(
-                '${SESSION_SEARCH_BAR_INPUT_VALUE}',
-                e.target.value
-              )
-            })(event)`}
-          />
+        <div className={`contentgroup${this.props.visible ? '' : ' fading-out'}`}>
+          <Focusable
+            onFocus={this._handleSearchOnFocus}
+            onBlur={this._handleSearchOnBlur}
+            onEnterDown={this._handleSearchOnEnterDown}
+            navDefault
+          >
+            <div className={
+              `search-box-placeholder${this.state.activeFocus ? ' focus' : ''}`
+            }>
+              <i className='fa fa-search' />
+              <input
+                id='search-bar-input'
+                ref={element => { this.searchBarInputRef = element }}
+                type='text'
+                value={this.state.searchValue}
+                style={this.state.activeFocus ? { backgroundColor: 'white' } : {}}
+                onKeyDown={`((e) => {
+                  sessionStorage.setItem(
+                    '${SESSION_SEARCH_BAR_INPUT_VALUE}',
+                    e.target.value
+                  )
+                })(event)`}
+              />
+            </div>
+          </Focusable>
         </div>
-      </Focusable>
+      </div>
     )
   }
 

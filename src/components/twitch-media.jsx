@@ -3,11 +3,12 @@ import React from 'react'
 import { Focusable } from 'react-key-navigation'
 
 export default class TwitchMedia extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor (...args) {
+    super(...args)
     this._handleFocusableOnFocus = this._handleFocusableOnFocus.bind(this)
     this._handleFocusableOnBlur = this._handleFocusableOnBlur.bind(this)
     this.state = { active: false }
+    this.mediaItem = React.createRef()
   }
 
   render () {
@@ -15,10 +16,15 @@ export default class TwitchMedia extends React.Component {
                       `item${(this.state.active && ' item-focus') || ''}`
     return (
       <Focusable
-        onFocus={this._handleFocusableOnFocus}
+        onFocus={this.props.onMediaItemFocus(
+          this._handleFocusableOnFocus,
+          this.mediaItem,
+          this.props.focusStruct
+        )}
         onBlur={this._handleFocusableOnBlur}
       >
         <div
+          ref={mediaItem => { this.mediaItem = mediaItem }}
           className={className}
           onClick={this.props.onMediaClick}
           style={{

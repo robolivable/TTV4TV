@@ -29,6 +29,7 @@ const mediaPropsByType = (type, item) => {
       return {}
   }
 }
+
 export default {
   mediaPropsByType
 }

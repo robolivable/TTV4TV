@@ -20,6 +20,7 @@ class MediaGridContainer extends React.Component {
         columns={columns}
         onFocus={this.props._handleMediaOnFocus}
         onBlur={this.props._handleMediaOnBlur}
+        gridScroll={this.props.gridScroll}
       >
         {this.props.medias.map((media, key) => {
           const {
@@ -34,6 +35,7 @@ class MediaGridContainer extends React.Component {
             <TwitchMedia
               className={this.props.name}
               key={key}
+              focusStruct={{ columns, rows, key }}
               gameTitle={gameTitle}
               name={name}
               previewUrl={previewUrl}
@@ -43,6 +45,7 @@ class MediaGridContainer extends React.Component {
                 config.MEDIA_PLAYER_TYPES[this.props.name],
                 id
               )}
+              onMediaItemFocus={this.props.onMediaItemFocus}
             />
           )
         })}
@@ -75,6 +78,7 @@ class MediaListContainer extends React.Component {
                 config.MEDIA_PLAYER_TYPES[this.props.name],
                 id
               )}
+              onMediaItemFocus={this.props.onMediaItemFocus}
             />
           )
         })}
@@ -86,11 +90,16 @@ class MediaListContainer extends React.Component {
 export default class MediaContent extends React.Component {
   constructor (...args) {
     super(...args)
+    this.onMediaItemFocus = this.onMediaItemFocus.bind(this)
     this._handleListMediaOnFocus = this._handleListMediaOnFocus.bind(this)
     this._handleListMediaOnBlur = this._handleListMediaOnBlur.bind(this)
     this._handleGridMediaOnFocus = this._handleGridMediaOnFocus.bind(this)
     this._handleGridMediaOnBlur = this._handleGridMediaOnBlur.bind(this)
     this._lastFocus = null
+    this._setStateCallback = this._setStateCallback.bind(this)
+    this.state = {
+      gridScroll: 0
+    }
   }
 
   componentDidMount () {
@@ -127,6 +136,7 @@ export default class MediaContent extends React.Component {
                   <MediaListContainer
                     _handleMediaOnFocus={this._handleListMediaOnFocus}
                     _handleMediaOnBlur={this._handleListMediaOnBlur}
+                    onMediaItemFocus={this.onMediaItemFocus}
                     {...this.props}
                   />
                 )
@@ -135,6 +145,8 @@ export default class MediaContent extends React.Component {
                   <MediaGridContainer
                     _handleMediaOnFocus={this._handleGridMediaOnFocus}
                     _handleMediaOnBlur={this._handleGridMediaOnBlur}
+                    onMediaItemFocus={this.onMediaItemFocus}
+                    gridScroll={this.state.gridScroll}
                     {...this.props}
                   />
                 )
@@ -145,6 +157,45 @@ export default class MediaContent extends React.Component {
         </div>
       </div>
     )
+  }
+
+  // Grid scrolling is made possible in this method
+  onMediaItemFocus (wrappedFunc, element, focusStruct) {
+    return (...args) => {
+      if (!focusStruct || !Number.isInteger(focusStruct.key)) {
+        return wrappedFunc(...args)
+      }
+
+      const currentRow = Math.ceil((focusStruct.key + 1) / focusStruct.columns)
+      if (currentRow <= this.state.gridScroll) {
+        this.setState(
+          { gridScroll: currentRow - 1 },
+          this._setStateCallback
+        )
+      }
+
+      const offsetTop = element.offsetTop
+      const windowHeight = window.innerHeight
+      const fullOffsetTop = offsetTop + element.clientHeight
+      const elementFitsInWindow = fullOffsetTop < windowHeight
+      if (elementFitsInWindow) {
+        return wrappedFunc(...args)
+      }
+
+      const deltaHeight = fullOffsetTop - windowHeight
+      const rowsToCloak = Math.ceil(deltaHeight / element.clientHeight)
+
+      this.setState(
+        { gridScroll: this.state.gridScroll + rowsToCloak },
+        this._setStateCallback
+      )
+
+      return wrappedFunc(...args)
+    }
+  }
+
+  _setStateCallback () {
+    this.props.setSearchBarIsVisible(!this.state.gridScroll)
   }
 
   _handleListMediaOnFocus (index) {
@@ -188,5 +239,6 @@ export default class MediaContent extends React.Component {
 
   _handleGridMediaOnBlur () {
     this._lastFocus = null
+    this.setState({ gridScroll: 0 }, this._setStateCallback)
   }
 }
