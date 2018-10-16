@@ -1,4 +1,5 @@
 /* eslint-disable operator-linebreak */
+import config from '../config'
 import React from 'react'
 
 import { Focusable, VerticalList } from 'react-key-navigation'
@@ -21,6 +22,7 @@ class SideBarButton extends React.Component {
       <Focusable
         onFocus={this._handleSideBarButtonOnFocus}
         onBlur={this._handleSideBarButtonOnBlur}
+        onClick={this.props.onClick}
       >
         <div className={`item${this.state.activeFocus ? ' item-focus' : ''}`}>
           <i className={`fa fa-${this.props.icon}`} />
@@ -70,22 +72,65 @@ export default class SideBar extends React.Component {
             focusId='sidebar'
             retainLastFocus
           >
-            <SideBarButton icon='user'>
+            <SideBarButton
+              icon='user'
+              onClick={this._handleSideBarButtonOnClick(
+                config.NAVIGATION_LOGIN
+              )}
+            >
               {this.state.isLoggedIn ? 'Logout' : 'Login'}
             </SideBarButton>
-            <SideBarButton icon='home'>Home</SideBarButton>
-            {this.state.isLoggedIn ? <SideBarButton icon='star'>
+            <SideBarButton
+              icon='home'
+              onClick={this._handleSideBarButtonOnClick(
+                config.NAVIGATION_HOME
+              )}
+            >
+              Home
+            </SideBarButton>
+            {this.state.isLoggedIn ? <SideBarButton
+              icon='star'
+              onClick={this._handleSideBarButtonOnClick(
+                config.NAVIGATION_CHANNELS_SUBBED
+              )}
+            >
               Subscribed
             </SideBarButton> : null}
-            {this.state.isLoggedIn ? <SideBarButton icon='heart'>
+            {this.state.isLoggedIn ? <SideBarButton
+              icon='heart'
+              onClick={this._handleSideBarButtonOnClick(
+                config.NAVIGATION_CHANNELS_FOLLOWING
+              )}
+            >
               Following
             </SideBarButton> : null}
-            <SideBarButton icon='gamepad'>Browse Games</SideBarButton>
-            <SideBarButton icon='film'>Browse Streams</SideBarButton>
+            <SideBarButton
+              icon='gamepad'
+              onClick={this._handleSideBarButtonOnClick(
+                config.NAVIGATION_GAMES
+              )}
+            >
+              Browse Games
+            </SideBarButton>
+            <SideBarButton
+              icon='film'
+              onClick={this._handleSideBarButtonOnClick(
+                config.NAVIGATION_STREAMS
+              )}
+            >
+              Browse Streams
+            </SideBarButton>
           </VerticalList>
         </div>
       </div>
     )
+  }
+
+  _handleSideBarButtonOnClick (navigation) {
+    return () => {
+      console.log('sidebar navigation ==>', navigation)
+      this.props.setNavigation(navigation)
+    }
   }
 
   _handleVirticalListOnFocus () {
