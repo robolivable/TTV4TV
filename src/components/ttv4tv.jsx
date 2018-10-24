@@ -25,27 +25,33 @@ export default class TTV4TV extends React.Component {
       isMediaPlayerEnabled: false,
       media: null,
       fetched: {},
-      subscribed: [],
-      following: [],
+      home: [],
+      channels: [],
+      channelsFollowing: [],
+      channelsSubbed: [],
+      games: [],
       streams: [],
-      topGames: [],
-      lists: [],
+      gameStreams: [],
+      search: [],
       searchBarIsVisible: true,
-      navigation: config.NAVIGATION_HOME
+      navigation: null
     }
     this.twitch = new Twitch()
   }
 
-  async componentDidMount () {
+  componentDidMount () {
+    document.addEventListener('keydown', this._handleOnKeyDown, false)
+    this.setState({ navigation: config.NAVIGATION_HOME })
+  }
+
+  async componentDidUpdate () {
     switch (this.state.navigation) {
       case (config.NAVIGATION_HOME):
         if (this.state.fetched[config.NAVIGATION_HOME]) {
           return
         }
 
-        document.addEventListener('keydown', this._handleOnKeyDown, false)
-
-        const lists = await Promise.all([
+        const home = await Promise.all([
           (async () => {
             const val = await this.twitch.subscribed()
             return {
@@ -96,18 +102,93 @@ export default class TTV4TV extends React.Component {
           })()
         ])
 
-        const fetched = Object.assign(
+        var fetched = Object.assign(
           {}, this.state.fetched, { [config.NAVIGATION_HOME]: true }
         )
         this.setState({
           fetched,
-          subscribed: lists[0].val,
-          following: lists[1].val,
-          topGames: lists[2].val,
-          streams: lists[3].val,
-          lists
+          home
         })
         break
+
+      case (config.NAVIGATION_CHANNELS):
+        // TODO: channels
+        break
+
+      case (config.NAVIGATION_CHANNELS_FOLLOWING):
+        // TODO: sessions
+        break
+
+      case (config.NAVIGATION_CHANNELS_SUBBED):
+        // TODO: sessions
+        break
+
+      case (config.NAVIGATION_GAMES):
+        if (this.state.fetched[config.NAVIGATION_GAMES]) {
+          return
+        }
+
+        const games = await Promise.all([
+          (async () => {
+            const val = await this.twitch.topGames()
+            return {
+              name: 'topGames',
+              type: 'grid',
+              dims: [272, 380],
+              mediaMargin: 40,
+              namePretty: 'Games',
+              caption: 'Games people are streaming right now',
+              val
+            }
+          })()
+        ])
+
+        var fetched = Object.assign(
+          {}, this.state.fetched, { [config.NAVIGATION_GAMES]: true }
+        )
+        this.setState({
+          fetched,
+          games
+        })
+        break
+
+      case (config.NAVIGATION_STREAMS):
+        if (this.state.fetched[config.NAVIGATION_STREAMS]) {
+          return
+        }
+
+        const streams = await Promise.all([
+          (async () => {
+            const val = await this.twitch.streams()
+            return {
+              name: 'streams',
+              type: 'grid',
+              dims: [320, 180],
+              mediaMargin: 40,
+              namePretty: 'Live Streams',
+              caption: 'Broadcasters that are live right now',
+              val
+            }
+          })()
+        ])
+
+        var fetched = Object.assign(
+          {}, this.state.fetched, { [config.NAVIGATION_STREAMS]: true }
+        )
+        this.setState({
+          fetched,
+          streams
+        })
+        break
+
+      case (config.NAVIGATION_GAME_STREAMS):
+        // TODO: handle single games
+        break
+
+      case (config.NAVIGATION_SEARCH):
+        // TODO: search
+        break
+
       default:
         break
     }
@@ -118,6 +199,7 @@ export default class TTV4TV extends React.Component {
       <Navigation>
         <div className='container'>
           {this.state.isMediaPlayerEnabled ? (() => {
+            // TODO: fix side bar layering bug
             switch (this.state.media.type) {
               case 'collection':
                 return (
@@ -145,16 +227,116 @@ export default class TTV4TV extends React.Component {
               setNavigation={this.setNavigation}
             />
             <div className='mainbox'>
-              {this.state.navigation === config.NAVIGATION_HOME ?
-                <VerticalList navDefault>
-                  <SearchBar
-                    visible={this.state.searchBarIsVisible}
-                  />
+              <VerticalList navDefault>
+                <SearchBar
+                  visible={this.state.searchBarIsVisible}
+                />
+                {this.state.navigation === config.NAVIGATION_HOME ?
                   <VerticalList
                     className='content'
                     onBlur={this._handleVerticalListOnBlur}
                   >
-                    {this.state.lists.map((list, key) =>
+                    {this.state.home.map((list, key) =>
+                      !!list.val && !!list.val.length ? <MediaContent
+                        key={key}
+                        title={list.namePretty}
+                        caption={list.caption}
+                        name={list.name}
+                        type={list.type}
+                        dims={list.dims}
+                        mediaMargin={list.mediaMargin}
+                        medias={list.val || []}
+                        onFocus={this._handleListOnFocus(key)}
+                        visible={(this.state.activeFocus === null ||
+                                 key >= this.state.activeFocus)}
+                        onMediaClick={this._handleMediaClick}
+                        setSearchBarIsVisible={this.setSearchBarIsVisible}
+                        disablePagination
+                      /> : null
+                    )}
+                  </VerticalList>
+                : null}
+                {this.state.navigation === config.NAVIGATION_CHANNELS_FOLLOWING ?
+                  <VerticalList
+                    className='content'
+                    onBlur={this._handleVerticalListOnBlur}
+                  >
+                    {this.state.channelsFollowing.map((list, key) =>
+                      !!list.val && !!list.val.length ? <MediaContent
+                        key={key}
+                        title={list.namePretty}
+                        caption={list.caption}
+                        name={list.name}
+                        type={list.type}
+                        dims={list.dims}
+                        mediaMargin={list.mediaMargin}
+                        medias={list.val || []}
+                        onFocus={this._handleListOnFocus(key)}
+                        visible={(this.state.activeFocus === null ||
+                                 key >= this.state.activeFocus)}
+                        onMediaClick={this._handleMediaClick}
+                        setSearchBarIsVisible={this.setSearchBarIsVisible}
+                        disablePagination
+                      /> : null
+                    )}
+                  </VerticalList>
+                : null}
+                {this.state.navigation === config.NAVIGATION_CHANNELS_SUBBED ?
+                  <VerticalList
+                    className='content'
+                    onBlur={this._handleVerticalListOnBlur}
+                  >
+                    {this.state.channelsSubbed.map((list, key) =>
+                      !!list.val && !!list.val.length ? <MediaContent
+                        key={key}
+                        title={list.namePretty}
+                        caption={list.caption}
+                        name={list.name}
+                        type={list.type}
+                        dims={list.dims}
+                        mediaMargin={list.mediaMargin}
+                        medias={list.val || []}
+                        onFocus={this._handleListOnFocus(key)}
+                        visible={(this.state.activeFocus === null ||
+                                 key >= this.state.activeFocus)}
+                        onMediaClick={this._handleMediaClick}
+                        setSearchBarIsVisible={this.setSearchBarIsVisible}
+                        disablePagination
+                      /> : null
+                    )}
+                  </VerticalList>
+                : null}
+                {this.state.navigation === config.NAVIGATION_CHANNELS ?
+                  <VerticalList
+                    className='content'
+                    onBlur={this._handleVerticalListOnBlur}
+                  >
+                    {this.state.channels.map((list, key) =>
+                      !!list.val && !!list.val.length ? <MediaContent
+                        key={key}
+                        title={list.namePretty}
+                        caption={list.caption}
+                        name={list.name}
+                        type={list.type}
+                        dims={list.dims}
+                        mediaMargin={list.mediaMargin}
+                        medias={list.val || []}
+                        onFocus={this._handleListOnFocus(key)}
+                        visible={(this.state.activeFocus === null ||
+                                 key >= this.state.activeFocus)}
+                        onMediaClick={this._handleMediaClick}
+                        setSearchBarIsVisible={this.setSearchBarIsVisible}
+                        disablePagination
+                      /> : null
+                    )}
+                  </VerticalList>
+                : null}
+                {this.state.navigation === config.NAVIGATION_GAMES ?
+                  <VerticalList
+                    className='content'
+                    onBlur={this._handleVerticalListOnBlur}
+                  >
+                    {this.state.games.map((list, key) =>
                       !!list.val && !!list.val.length ? <MediaContent
                         key={key}
                         title={list.namePretty}
@@ -172,43 +354,86 @@ export default class TTV4TV extends React.Component {
                       /> : null
                     )}
                   </VerticalList>
-                </VerticalList>
-               : null}
-              {this.state.navigation === config.NAVIGATION_CHANNELS_FOLLOWING ?
-                <div>
-                  CHANNELS FOLLOWING!
-                </div>
-              : null}
-              {this.state.navigation === config.NAVIGATION_CHANNELS_SUBBED ?
-                <div>
-                  CHANNELS SUBBED!
-                </div>
-              : null}
-              {this.state.navigation === config.NAVIGATION_CHANNELS ?
-                <div>
-                  CHANNELS!
-                </div>
-              : null}
-              {this.state.navigation === config.NAVIGATION_GAMES ?
-                <div>
-                  GAMES!
-                </div>
-              : null}
-              {this.state.navigation === config.NAVIGATION_STREAMS ?
-                <div>
-                  STREAMS!
-                </div>
-              : null}
-              {this.state.navigation === config.NAVIGATION_SEARCH ?
-                <div>
-                  SEARCH!
-                </div>
-              : null}
-              {this.state.navigation === config.NAVIGATION_LOGIN ?
-                <div>
-                  LOGIN!
-                </div>
-              : null}
+                : null}
+                {this.state.navigation === config.NAVIGATION_STREAMS ?
+                  <VerticalList
+                    className='content'
+                    onBlur={this._handleVerticalListOnBlur}
+                  >
+                    {this.state.streams.map((list, key) =>
+                      !!list.val && !!list.val.length ? <MediaContent
+                        key={key}
+                        title={list.namePretty}
+                        caption={list.caption}
+                        name={list.name}
+                        type={list.type}
+                        dims={list.dims}
+                        mediaMargin={list.mediaMargin}
+                        medias={list.val || []}
+                        onFocus={this._handleListOnFocus(key)}
+                        visible={(this.state.activeFocus === null ||
+                                 key >= this.state.activeFocus)}
+                        onMediaClick={this._handleMediaClick}
+                        setSearchBarIsVisible={this.setSearchBarIsVisible}
+                      /> : null
+                    )}
+                  </VerticalList>
+                : null}
+                {this.state.navigation === config.NAVIGATION_GAME_STREAMS ?
+                  <VerticalList
+                    className='content'
+                    onBlur={this._handleVerticalListOnBlur}
+                  >
+                    {this.state.gameStreams.map((list, key) =>
+                      !!list.val && !!list.val.length ? <MediaContent
+                        key={key}
+                        title={list.namePretty}
+                        caption={list.caption}
+                        name={list.name}
+                        type={list.type}
+                        dims={list.dims}
+                        mediaMargin={list.mediaMargin}
+                        medias={list.val || []}
+                        onFocus={this._handleListOnFocus(key)}
+                        visible={(this.state.activeFocus === null ||
+                                 key >= this.state.activeFocus)}
+                        onMediaClick={this._handleMediaClick}
+                        setSearchBarIsVisible={this.setSearchBarIsVisible}
+                      /> : null
+                    )}
+                  </VerticalList>
+                : null}
+                {this.state.navigation === config.NAVIGATION_SEARCH ?
+                  <VerticalList
+                    className='content'
+                    onBlur={this._handleVerticalListOnBlur}
+                  >
+                    {this.state.search.map((list, key) =>
+                      !!list.val && !!list.val.length ? <MediaContent
+                        key={key}
+                        title={list.namePretty}
+                        caption={list.caption}
+                        name={list.name}
+                        type={list.type}
+                        dims={list.dims}
+                        mediaMargin={list.mediaMargin}
+                        medias={list.val || []}
+                        onFocus={this._handleListOnFocus(key)}
+                        visible={(this.state.activeFocus === null ||
+                                 key >= this.state.activeFocus)}
+                        onMediaClick={this._handleMediaClick}
+                        setSearchBarIsVisible={this.setSearchBarIsVisible}
+                        disablePagination
+                      /> : null
+                    )}
+                  </VerticalList>
+                : null}
+                {this.state.navigation === config.NAVIGATION_LOGIN ?
+                  <div>
+                    LOGIN!!!
+                  </div>
+                : null}
+              </VerticalList>
             </div>
           </HorizontalList>
         </div>
@@ -230,6 +455,7 @@ export default class TTV4TV extends React.Component {
         return
       }
       if (type === 'game') {
+        // TODO: handle single games
         console.log('TODO: handle game')
         return
       }

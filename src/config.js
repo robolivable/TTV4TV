@@ -19,6 +19,7 @@ const NAVIGATION_CHANNELS_FOLLOWING = 'channels_following'
 const NAVIGATION_CHANNELS_SUBBED = 'channels_subbed'
 const NAVIGATION_GAMES = 'games'
 const NAVIGATION_STREAMS = 'streams'
+const NAVIGATION_GAME_STREAMS = 'game_streams'
 const NAVIGATION_SEARCH = 'search'
 const NAVIGATION_LOGIN = 'login'
 
