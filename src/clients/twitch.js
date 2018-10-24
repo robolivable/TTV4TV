@@ -16,11 +16,14 @@ class TwitchResource {
   constructor (directory, auth) {
     this.directory = directory
     this.authorization = auth
+    this.limit = 25
+    this.offset = 0
   }
 
   async get (key = '', directory = '') {
-    return (await fetch( // eslint-disable-line
-      config.Twitch.URL + (directory || this.directory) + key,
+    const result = (await fetch( // eslint-disable-line
+      `${config.Twitch.URL}${directory || this.directory}${key}` +
+      `?offset=${this.offset}&limit=${this.limit}`,
       {
         headers: {
           Accept: config.Twitch.ACCEPT,
@@ -29,6 +32,8 @@ class TwitchResource {
         }
       }
     )).json()
+    this.offset = this.offset + this.limit
+    return result
   }
 }
 
@@ -65,13 +70,23 @@ class TwitchObjectCollection {
   }
 
   async fetch () {
-    this.collection = await this.resource.get()
+    this.collection = this.collection.concat(await this.resource.get())
   }
 
   * iter () {
     for (const object of this.collection) {
       yield new this.clazz(object._id, object) // eslint-disable-line
     }
+  }
+
+  get length () {
+    return this.collection.length
+  }
+
+  map (func) {
+    return this.collection.map((object, key) => func(
+      new this.clazz(object._id, object), key
+    ))
   }
 }
 
@@ -127,7 +142,7 @@ class Streams extends TwitchObjectCollection {
   }
 
   async fetch () {
-    this.collection = (await this.resource.get()).streams
+    this.collection = this.collection.concat((await this.resource.get()).streams)
   }
 }
 
@@ -138,7 +153,7 @@ class TopGames extends TwitchObjectCollection {
   }
 
   async fetch () {
-    this.collection = (await this.resource.get()).top
+    this.collection = this.collection.concat((await this.resource.get()).top)
   }
 }
 
@@ -178,13 +193,13 @@ class Twitch {
   async topGames () {
     const topGames = new TopGames('', this.auth)
     await topGames.fetch()
-    return Array.from(topGames.iter())
+    return topGames
   }
 
   async streams () {
     const streams = new Streams('', this.auth)
     await streams.fetch()
-    return Array.from(streams.iter())
+    return streams
   }
 }
 

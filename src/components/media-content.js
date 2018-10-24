@@ -9,11 +9,26 @@ const FOCUSABLE_GRID = 'grid'
 const FOCUSABLE_LIST = 'hzlist'
 
 class MediaGridContainer extends React.Component {
+  constructor (...args) {
+    super(...args)
+    this.state = {
+      medias: this.props.medias
+    }
+  }
+
+  async fetchMedias () {
+    if (this.props.disablePagination) {
+      return
+    }
+    await this.props.medias.fetch()
+    this.setState({ medias: this.props.medias })
+  }
+
   render () {
     const columns = Math.floor(
       window.innerWidth / (this.props.dims[0] + this.props.mediaMargin)
     )
-    const rows = Math.ceil(this.props.medias.length / columns)
+    const rows = Math.ceil(this.state.medias.length / columns)
     return (
       <Grid
         rows={rows}
@@ -22,7 +37,7 @@ class MediaGridContainer extends React.Component {
         onBlur={this.props._handleMediaOnBlur}
         gridScroll={this.props.gridScroll}
       >
-        {this.props.medias.map((media, key) => {
+        {this.state.medias.map((media, key) => {
           const {
             id,
             gameTitle,
@@ -45,7 +60,7 @@ class MediaGridContainer extends React.Component {
                 config.MEDIA_PLAYER_TYPES[this.props.name],
                 id
               )}
-              onMediaItemFocus={this.props.onMediaItemFocus}
+              onMediaItemFocus={this.props.onMediaItemFocus(this)}
             />
           )
         })}
@@ -55,6 +70,21 @@ class MediaGridContainer extends React.Component {
 }
 
 class MediaListContainer extends React.Component {
+  constructor (...args) {
+    super(...args)
+    this.state = {
+      medias: this.props.medias
+    }
+  }
+
+  async fetchMedias () {
+    if (this.props.disablePagination) {
+      return
+    }
+    await this.props.medias.fetch()
+    this.setState({ medias: this.props.medias })
+  }
+
   render () {
     return (
       <HorizontalList
@@ -63,7 +93,7 @@ class MediaListContainer extends React.Component {
         onFocus={this.props._handleMediaOnFocus}
         onBlur={this.props._handleMediaOnBlur}
       >
-        {this.props.medias.map((media, key) => {
+        {this.state.medias.map((media, key) => {
           const { id, previewUrl, viewCount } = utils.mediaPropsByType(
             this.props.name,
             media
@@ -78,7 +108,7 @@ class MediaListContainer extends React.Component {
                 config.MEDIA_PLAYER_TYPES[this.props.name],
                 id
               )}
-              onMediaItemFocus={this.props.onMediaItemFocus}
+              onMediaItemFocus={this.props.onMediaItemFocus(this)}
             />
           )
         })}
@@ -160,37 +190,45 @@ export default class MediaContent extends React.Component {
   }
 
   // Grid scrolling is made possible in this method
-  onMediaItemFocus (wrappedFunc, element, focusStruct) {
-    return (...args) => {
-      if (!focusStruct || !Number.isInteger(focusStruct.key)) {
-        return wrappedFunc(...args)
-      }
+  // TODO: fix pagination grid scroll bug
+  onMediaItemFocus (component) {
+    return (wrappedFunc, element, focusStruct) => {
+      return (...args) => {
+        if (!focusStruct || !Number.isInteger(focusStruct.key)) {
+          return wrappedFunc(...args)
+        }
 
-      const currentRow = Math.ceil((focusStruct.key + 1) / focusStruct.columns)
-      if (currentRow <= this.state.gridScroll) {
+        const currentRow = Math.ceil(
+          (focusStruct.key + 1) / focusStruct.columns
+        )
+        if (currentRow <= this.state.gridScroll) {
+          this.setState(
+            { gridScroll: currentRow - 1 },
+            this._setStateCallback
+          )
+        }
+
+        const offsetTop = element.offsetTop
+        const windowHeight = window.innerHeight
+        const fullOffsetTop = offsetTop + element.clientHeight
+        const elementFitsInWindow = fullOffsetTop < windowHeight
+        if (currentRow === focusStruct.rows) {
+          component.fetchMedias() // fire & forget
+        }
+        if (elementFitsInWindow) {
+          return wrappedFunc(...args)
+        }
+
+        const deltaHeight = fullOffsetTop - windowHeight
+        const rowsToCloak = Math.ceil(deltaHeight / element.clientHeight)
+
         this.setState(
-          { gridScroll: currentRow - 1 },
+          { gridScroll: this.state.gridScroll + rowsToCloak },
           this._setStateCallback
         )
-      }
 
-      const offsetTop = element.offsetTop
-      const windowHeight = window.innerHeight
-      const fullOffsetTop = offsetTop + element.clientHeight
-      const elementFitsInWindow = fullOffsetTop < windowHeight
-      if (elementFitsInWindow) {
         return wrappedFunc(...args)
       }
-
-      const deltaHeight = fullOffsetTop - windowHeight
-      const rowsToCloak = Math.ceil(deltaHeight / element.clientHeight)
-
-      this.setState(
-        { gridScroll: this.state.gridScroll + rowsToCloak },
-        this._setStateCallback
-      )
-
-      return wrappedFunc(...args)
     }
   }
 
