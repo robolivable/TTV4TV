@@ -239,6 +239,7 @@ export default class MediaContent extends React.Component {
     this.props.setSearchBarIsVisible(!this.state.gridScroll)
   }
 
+  // TODO: optimize focus logic to work with very large lists
   _handleListMediaOnFocus (index) {
     if (this._lastFocus === index) {
       return
@@ -266,6 +267,7 @@ export default class MediaContent extends React.Component {
     this._lastFocus = null
   }
 
+  // TODO: optimize focus logic to work with very large lists
   _handleGridMediaOnFocus (index) {
     if (this._lastFocus === index) {
       return

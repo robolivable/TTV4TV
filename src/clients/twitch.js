@@ -70,6 +70,7 @@ class TwitchObjectCollection {
   }
 
   async fetch () {
+    // TODO: memory leak when this.collection becomes huge
     this.collection = this.collection.concat(await this.resource.get())
   }
 
@@ -142,6 +143,7 @@ class Streams extends TwitchObjectCollection {
   }
 
   async fetch () {
+    // TODO: memory leak when this.collection becomes huge
     this.collection = this.collection.concat((await this.resource.get()).streams)
   }
 }
@@ -153,6 +155,7 @@ class TopGames extends TwitchObjectCollection {
   }
 
   async fetch () {
+    // TODO: memory leak when this.collection becomes huge
     this.collection = this.collection.concat((await this.resource.get()).top)
   }
 }
