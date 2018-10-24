@@ -94,14 +94,17 @@ class MediaListContainer extends React.Component {
         onBlur={this.props._handleMediaOnBlur}
       >
         {this.state.medias.map((media, key) => {
-          const { id, previewUrl, viewCount } = utils.mediaPropsByType(
-            this.props.name,
-            media
-          )
+          const {
+            id,
+            gameTitle,
+            previewUrl,
+            viewCount
+          } = utils.mediaPropsByType(this.props.name, media)
           return (
             <TwitchMedia
               className={this.props.name}
               key={key}
+              gameTitle={gameTitle}
               previewUrl={previewUrl}
               viewCount={viewCount}
               onMediaClick={this.props.onMediaClick(
