@@ -195,43 +195,41 @@ export default class MediaContent extends React.Component {
   // Grid scrolling is made possible in this method
   // TODO: fix pagination grid scroll bug
   onMediaItemFocus (component) {
-    return (wrappedFunc, element, focusStruct) => {
-      return (...args) => {
-        if (!focusStruct || !Number.isInteger(focusStruct.key)) {
-          return wrappedFunc(...args)
-        }
-
-        const currentRow = Math.ceil(
-          (focusStruct.key + 1) / focusStruct.columns
-        )
-        if (currentRow <= this.state.gridScroll) {
-          this.setState(
-            { gridScroll: currentRow - 1 },
-            this._setStateCallback
-          )
-        }
-
-        const offsetTop = element.offsetTop
-        const windowHeight = window.innerHeight
-        const fullOffsetTop = offsetTop + element.clientHeight
-        const elementFitsInWindow = fullOffsetTop < windowHeight
-        if (currentRow === focusStruct.rows) {
-          component.fetchMedias() // fire & forget
-        }
-        if (elementFitsInWindow) {
-          return wrappedFunc(...args)
-        }
-
-        const deltaHeight = fullOffsetTop - windowHeight
-        const rowsToCloak = Math.ceil(deltaHeight / element.clientHeight)
-
-        this.setState(
-          { gridScroll: this.state.gridScroll + rowsToCloak },
-          this._setStateCallback
-        )
-
+    return (wrappedFunc, element, focusStruct) => (...args) => {
+      if (!focusStruct || !Number.isInteger(focusStruct.key)) {
         return wrappedFunc(...args)
       }
+
+      const currentRow = Math.ceil(
+        (focusStruct.key + 1) / focusStruct.columns
+      )
+      if (currentRow <= this.state.gridScroll) {
+        this.setState(
+          { gridScroll: currentRow - 1 },
+          this._setStateCallback
+        )
+      }
+
+      const offsetTop = element.offsetTop
+      const windowHeight = window.innerHeight
+      const fullOffsetTop = offsetTop + element.clientHeight
+      const elementFitsInWindow = fullOffsetTop < windowHeight
+      if (currentRow === focusStruct.rows) {
+        component.fetchMedias() // fire & forget
+      }
+      if (elementFitsInWindow) {
+        return wrappedFunc(...args)
+      }
+
+      const deltaHeight = fullOffsetTop - windowHeight
+      const rowsToCloak = Math.ceil(deltaHeight / element.clientHeight)
+
+      this.setState(
+        { gridScroll: this.state.gridScroll + rowsToCloak },
+        this._setStateCallback
+      )
+
+      return wrappedFunc(...args)
     }
   }
 
