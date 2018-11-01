@@ -193,10 +193,11 @@ export default class MediaContent extends React.Component {
   }
 
   // Grid scrolling is made possible in this method
-  // TODO: fix pagination grid scroll bug
   onMediaItemFocus (component) {
     return (wrappedFunc, element, focusStruct) => (...args) => {
-      if (!focusStruct || !Number.isInteger(focusStruct.key)) {
+      if (!focusStruct ||
+          !Number.isInteger(focusStruct.key) ||
+          !utils.isDOMElement(element)) {
         return wrappedFunc(...args)
       }
 
@@ -214,7 +215,9 @@ export default class MediaContent extends React.Component {
       const windowHeight = window.innerHeight
       const fullOffsetTop = offsetTop + element.clientHeight
       const elementFitsInWindow = fullOffsetTop < windowHeight
-      if (currentRow === focusStruct.rows) {
+      if (currentRow === focusStruct.rows - 1) {
+        // TODO: HACK FIXME, we load one row before the last to avoid getting
+        // a null react ref here (for `element`)
         component.fetchMedias() // fire & forget
       }
       if (elementFitsInWindow) {

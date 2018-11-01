@@ -31,6 +31,20 @@ const mediaPropsByType = (type, item) => {
   }
 }
 
+const isDOMElement = o => {
+  return !!(
+    typeof HTMLElement === 'object'
+      ? o instanceof HTMLElement
+      : o &&
+    typeof o === 'object' &&
+    o !== null &&
+    o.nodeType === 1 &&
+    typeof o.nodeName === 'string'
+  )
+}
+
 export default {
+  isDOMElement,
+  isDOMNode,
   mediaPropsByType
 }
