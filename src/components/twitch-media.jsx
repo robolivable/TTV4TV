@@ -8,7 +8,6 @@ export default class TwitchMedia extends React.Component {
     this._handleFocusableOnFocus = this._handleFocusableOnFocus.bind(this)
     this._handleFocusableOnBlur = this._handleFocusableOnBlur.bind(this)
     this.state = { active: false }
-    this.mediaItem = React.createRef()
   }
 
   render () {
