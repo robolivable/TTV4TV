@@ -111,16 +111,14 @@ export default class TTV4TV extends React.Component {
         })
         break
 
-      case (config.NAVIGATION_CHANNELS):
-        // TODO: channels
-        break
-
       case (config.NAVIGATION_CHANNELS_FOLLOWING):
         // TODO: sessions
+        // TODO: channels following
         break
 
       case (config.NAVIGATION_CHANNELS_SUBBED):
         // TODO: sessions
+        // TODO: channels subbed to
         break
 
       case (config.NAVIGATION_GAMES):
@@ -287,31 +285,6 @@ export default class TTV4TV extends React.Component {
                     onBlur={this._handleVerticalListOnBlur}
                   >
                     {this.state.channelsSubbed.map((list, key) =>
-                      !!list.val && !!list.val.length ? <MediaContent
-                        key={key}
-                        title={list.namePretty}
-                        caption={list.caption}
-                        name={list.name}
-                        type={list.type}
-                        dims={list.dims}
-                        mediaMargin={list.mediaMargin}
-                        medias={list.val || []}
-                        onFocus={this._handleListOnFocus(key)}
-                        visible={(this.state.activeFocus === null ||
-                                 key >= this.state.activeFocus)}
-                        onMediaClick={this._handleMediaClick}
-                        setSearchBarIsVisible={this.setSearchBarIsVisible}
-                        disablePagination
-                      /> : null
-                    )}
-                  </VerticalList>
-                : null}
-                {this.state.navigation === config.NAVIGATION_CHANNELS ?
-                  <VerticalList
-                    className='content'
-                    onBlur={this._handleVerticalListOnBlur}
-                  >
-                    {this.state.channels.map((list, key) =>
                       !!list.val && !!list.val.length ? <MediaContent
                         key={key}
                         title={list.namePretty}

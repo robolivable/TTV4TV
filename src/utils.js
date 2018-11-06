@@ -45,6 +45,5 @@ const isDOMElement = o => {
 
 export default {
   isDOMElement,
-  isDOMNode,
   mediaPropsByType
 }
