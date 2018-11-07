@@ -43,7 +43,8 @@ export default class TwitchMedia extends React.Component {
               {this.props.gameTitle}
             </div>
             <div className='twitch-media-viewCount'>
-              {new Intl.NumberFormat('en').format(this.props.viewCount)} viewers
+              {new Intl.NumberFormat('en').format(this.props.viewCount)}
+              {this.props.className === 'channels' ? ' followers' : ' viewers'}
             </div>
           </div>
         </div>

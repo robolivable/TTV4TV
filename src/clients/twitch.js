@@ -49,7 +49,7 @@ class TwitchObject {
   }
 
   get (key) {
-    if (!this.properties[key]) {
+    if (this.properties[key] === undefined || this.properties[key] === null) {
       return null
     }
     return this.properties[key]
@@ -136,6 +136,16 @@ class Channels extends TwitchObjectCollection { // eslint-disable-line
   constructor (key = '', auth = {}) {
     const dir = config.Twitch.API_V5 + config.Twitch.DIRS.channels
     super(Channel, { key, dir, auth })
+  }
+
+  async search (query) {
+    const dir = config.Twitch.API_V5 + config.Twitch.DIRS.search
+    this.collection = this.collection.concat(
+      (await this.resource.get('/channels', dir, { query })).channels || []
+    )
+    this.collection.sort((a, b) =>
+      new Channel('', b).get('followers') - new Channel('', a).get('followers')
+    )
   }
 }
 
@@ -242,6 +252,12 @@ class Twitch {
     const gameStreams = new GameStreams(game, this.auth)
     await gameStreams.fetch()
     return gameStreams
+  }
+
+  async searchChannels (string) {
+    const channels = new Channels('', this.auth)
+    await channels.search(string)
+    return channels
   }
 
   async searchGames (string) {

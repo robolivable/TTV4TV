@@ -223,18 +223,6 @@ export default class TTV4TV extends React.Component {
 
         const search = await Promise.all([
           (async () => {
-            const val = await this.twitch.searchGames(this.state.searchString)
-            return {
-              name: 'games',
-              type: 'grid',
-              dims: [272, 380],
-              mediaMargin: 40,
-              namePretty: 'Games',
-              caption: `Game results for ${this.state.searchString}`,
-              val
-            }
-          })(),
-          (async () => {
             const val = await this.twitch.searchStreams(this.state.searchString)
             return {
               name: 'streams',
@@ -243,6 +231,30 @@ export default class TTV4TV extends React.Component {
               mediaMargin: 40,
               namePretty: 'Live Streams',
               caption: `Stream results for ${this.state.searchString}`,
+              val
+            }
+          })(),
+          (async () => {
+            const val = await this.twitch.searchChannels(this.state.searchString)
+            return {
+              name: 'channels',
+              type: 'grid',
+              dims: [272, 380],
+              mediaMargin: 40,
+              namePretty: 'Channels',
+              caption: `Channel results for ${this.state.searchString}`,
+              val
+            }
+          })(),
+          (async () => {
+            const val = await this.twitch.searchGames(this.state.searchString)
+            return {
+              name: 'games',
+              type: 'grid',
+              dims: [272, 380],
+              mediaMargin: 40,
+              namePretty: 'Games',
+              caption: `Game results for ${this.state.searchString}`,
               val
             }
           })()
@@ -266,6 +278,7 @@ export default class TTV4TV extends React.Component {
     // TODO: FIXME on NAVIGATION_GAME_STREAMS, we need to render unique keys
     //       so that a list render gets triggered... there is currently a temp
     //       hack to make `key` unique based on caption
+    //       Additionally, the `key` prop is used for navigation...
     return (
       <Navigation>
         <div className='container'>
@@ -515,6 +528,10 @@ export default class TTV4TV extends React.Component {
           gameClicked: id,
           navigation: config.NAVIGATION_GAME_STREAMS
         })
+        return
+      }
+      if (type === 'channel') {
+        // TODO: handle channel click
         return
       }
       this.setState({
