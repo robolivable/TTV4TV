@@ -20,10 +20,13 @@ class TwitchResource {
     this.offset = 0
   }
 
-  async get (key = '', directory = '') {
+  async get (key = '', directory = '', qs = {}) {
     const result = (await fetch( // eslint-disable-line
       `${config.Twitch.URL}${directory || this.directory}${key}` +
-      `?offset=${this.offset}&limit=${this.limit}`,
+      `?offset=${this.offset}&limit=${this.limit}` +
+      `${Object.keys(qs).map(
+        k => `&${k}=${encodeURIComponent(qs[k])}`
+      ).join()}`,
       {
         headers: {
           Accept: config.Twitch.ACCEPT,
@@ -70,7 +73,7 @@ class TwitchObjectCollection {
   }
 
   async fetch () {
-    // TODO: memory leak when this.collection becomes huge
+    // TODO: FIXME memory leak when this.collection becomes huge
     this.collection = this.collection.concat(await this.resource.get())
   }
 
@@ -143,8 +146,10 @@ class Streams extends TwitchObjectCollection {
   }
 
   async fetch () {
-    // TODO: memory leak when this.collection becomes huge
-    this.collection = this.collection.concat((await this.resource.get()).streams)
+    // TODO: FIXME memory leak when this.collection becomes huge
+    this.collection = this.collection.concat((
+      await this.resource.get()
+    ).streams)
   }
 }
 
@@ -155,8 +160,22 @@ class TopGames extends TwitchObjectCollection {
   }
 
   async fetch () {
-    // TODO: memory leak when this.collection becomes huge
+    // TODO: FIXME memory leak when this.collection becomes huge
     this.collection = this.collection.concat((await this.resource.get()).top)
+  }
+}
+
+class GameStreams extends TwitchObjectCollection {
+  constructor (key = '', auth = {}) {
+    const dir = config.Twitch.API_V5 + config.Twitch.DIRS.streams
+    super(Stream, { key, dir, auth })
+  }
+
+  async fetch () {
+    // TODO: FIXME memory leak when this.collection becomes huge
+    this.collection = this.collection.concat((
+      await this.resource.get('', '', { game: this.key })
+    ).streams)
   }
 }
 
@@ -203,6 +222,12 @@ class Twitch {
     const streams = new Streams('', this.auth)
     await streams.fetch()
     return streams
+  }
+
+  async gameStreams (game) {
+    const gameStreams = new GameStreams(game, this.auth)
+    await gameStreams.fetch()
+    return gameStreams
   }
 }
 
