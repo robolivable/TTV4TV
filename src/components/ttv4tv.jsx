@@ -45,6 +45,7 @@ export default class TTV4TV extends React.Component {
   }
 
   async componentDidUpdate () {
+    console.info('Updated with navigation =>', this.state.navigation)
     switch (this.state.navigation) {
       case (config.NAVIGATION_HOME):
         if (this.state.fetched[config.NAVIGATION_HOME]) {
@@ -180,7 +181,35 @@ export default class TTV4TV extends React.Component {
         break
 
       case (config.NAVIGATION_GAME_STREAMS):
-        // TODO: handle single games
+        if (this.state.fetched[config.NAVIGATION_GAME_STREAMS] ===
+            this.state.gameClicked) {
+          // TODO: cache already fetched games? (LRU?)
+          return
+        }
+
+        const gameStreams = await Promise.all([
+          (async () => {
+            const val = await this.twitch.gameStreams(this.state.gameClicked)
+            return {
+              name: 'streams',
+              type: 'grid',
+              dims: [320, 180],
+              mediaMargin: 40,
+              namePretty: 'Live Streams',
+              caption: `Broadcasters that are streaming ` +
+                       `${this.state.gameClicked}`,
+              val
+            }
+          })()
+        ])
+        var fetched = Object.assign(
+          {}, this.state.fetched,
+          { [config.NAVIGATION_GAME_STREAMS]: this.state.gameClicked }
+        )
+        this.setState({
+          fetched,
+          gameStreams
+        })
         break
 
       case (config.NAVIGATION_SEARCH):
@@ -193,6 +222,9 @@ export default class TTV4TV extends React.Component {
   }
 
   render () {
+    // TODO: FIXME on NAVIGATION_GAME_STREAMS, we need to render unique keys
+    //       so that a list render gets triggered... there is currently a temp
+    //       hack to make `key` unique based on caption
     return (
       <Navigation>
         <div className='container'>
@@ -359,7 +391,7 @@ export default class TTV4TV extends React.Component {
                   >
                     {this.state.gameStreams.map((list, key) =>
                       !!list.val && !!list.val.length ? <MediaContent
-                        key={key}
+                        key={key+list.caption}
                         title={list.namePretty}
                         caption={list.caption}
                         name={list.name}
@@ -428,8 +460,10 @@ export default class TTV4TV extends React.Component {
         return
       }
       if (type === 'game') {
-        // TODO: handle single games
-        console.log('TODO: handle game')
+        this.setState({
+          gameClicked: id,
+          navigation: config.NAVIGATION_GAME_STREAMS
+        })
         return
       }
       this.setState({

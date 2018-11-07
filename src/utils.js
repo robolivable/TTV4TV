@@ -12,7 +12,7 @@ const mediaPropsByType = (type, item) => {
       }
     case 'topGames':
       return {
-        id: item.get('game')._id,
+        id: item.get('game').name,
         gameTitle: item.get('game').name,
         previewUrl: item.get('game').box.large,
         viewCount: item.get('viewers')
