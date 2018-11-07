@@ -297,7 +297,8 @@ export default class TTV4TV extends React.Component {
                     options={{ video: this.state.media.id }}
                   />
                 )
-              case 'channel':
+              case config.MEDIA_PLAYER_TYPES.streams:
+              case config.MEDIA_PLAYER_TYPES.channels:
               default:
                 return (
                   <TwitchPlayer
@@ -534,7 +535,11 @@ export default class TTV4TV extends React.Component {
           })
           return
         case (config.MEDIA_PLAYER_TYPES.channels):
-          // TODO: handle single channel click
+          this.setState({
+            isMediaPlayerEnabled: true,
+            media: { type, id }
+          })
+          return
         default:
           return
       }
