@@ -151,6 +151,13 @@ class Streams extends TwitchObjectCollection {
       await this.resource.get()
     ).streams)
   }
+
+  async search (query) {
+    const dir = config.Twitch.API_V5 + config.Twitch.DIRS.search
+    this.collection = this.collection.concat(
+      (await this.resource.get('/streams', dir, { query })).streams || []
+    )
+  }
 }
 
 class TopGames extends TwitchObjectCollection {
@@ -162,6 +169,13 @@ class TopGames extends TwitchObjectCollection {
   async fetch () {
     // TODO: FIXME memory leak when this.collection becomes huge
     this.collection = this.collection.concat((await this.resource.get()).top)
+  }
+
+  async search (query) {
+    const dir = config.Twitch.API_V5 + config.Twitch.DIRS.search
+    this.collection = this.collection.concat(
+      (await this.resource.get('/games', dir, { query })).games || []
+    )
   }
 }
 
@@ -228,6 +242,18 @@ class Twitch {
     const gameStreams = new GameStreams(game, this.auth)
     await gameStreams.fetch()
     return gameStreams
+  }
+
+  async searchGames (string) {
+    const topGames = new TopGames('', this.auth)
+    await topGames.search(string)
+    return topGames
+  }
+
+  async searchStreams (string) {
+    const streams = new Streams('', this.auth)
+    await streams.search(string)
+    return streams
   }
 }
 

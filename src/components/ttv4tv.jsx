@@ -18,6 +18,7 @@ export default class TTV4TV extends React.Component {
     this._handleListOnFocus = this._handleListOnFocus.bind(this)
     this._handleVerticalListOnBlur = this._handleVerticalListOnBlur.bind(this)
     this._handleOnKeyDown = this._handleOnKeyDown.bind(this)
+    this._handleSearchOnEnterDown = this._handleSearchOnEnterDown.bind(this)
     this.setSearchBarIsVisible = this.setSearchBarIsVisible.bind(this)
     this.setNavigation = this.setNavigation.bind(this)
     this.state = {
@@ -33,6 +34,7 @@ export default class TTV4TV extends React.Component {
       streams: [],
       gameStreams: [],
       search: [],
+      searchString: null,
       searchBarIsVisible: true,
       navigation: null
     }
@@ -213,7 +215,46 @@ export default class TTV4TV extends React.Component {
         break
 
       case (config.NAVIGATION_SEARCH):
-        // TODO: search
+        if (this.state.fetched[config.NAVIGATION_SEARCH] ===
+            this.state.searchString) {
+          // TODO: cache already fetched searches? (LRU?)
+          return
+        }
+
+        const search = await Promise.all([
+          (async () => {
+            const val = await this.twitch.searchGames(this.state.searchString)
+            return {
+              name: 'games',
+              type: 'grid',
+              dims: [272, 380],
+              mediaMargin: 40,
+              namePretty: 'Games',
+              caption: `Game results for ${this.state.searchString}`,
+              val
+            }
+          })(),
+          (async () => {
+            const val = await this.twitch.searchStreams(this.state.searchString)
+            return {
+              name: 'streams',
+              type: 'grid',
+              dims: [320, 180],
+              mediaMargin: 40,
+              namePretty: 'Live Streams',
+              caption: `Stream results for ${this.state.searchString}`,
+              val
+            }
+          })()
+        ])
+        var fetched = Object.assign(
+          {}, this.state.fetched,
+          { [config.NAVIGATION_SEARCH]: this.state.searchString }
+        )
+        this.setState({
+          fetched,
+          search
+        })
         break
 
       default:
@@ -260,6 +301,7 @@ export default class TTV4TV extends React.Component {
               <VerticalList navDefault>
                 <SearchBar
                   visible={this.state.searchBarIsVisible}
+                  onEnterDown={this._handleSearchOnEnterDown}
                 />
                 {this.state.navigation === config.NAVIGATION_HOME ?
                   <VerticalList
@@ -415,7 +457,7 @@ export default class TTV4TV extends React.Component {
                   >
                     {this.state.search.map((list, key) =>
                       !!list.val && !!list.val.length ? <MediaContent
-                        key={key}
+                        key={key+list.caption}
                         title={list.namePretty}
                         caption={list.caption}
                         name={list.name}
@@ -429,7 +471,16 @@ export default class TTV4TV extends React.Component {
                         onMediaClick={this._handleMediaClick}
                         setSearchBarIsVisible={this.setSearchBarIsVisible}
                         disablePagination
-                      /> : null
+                      /> : <div>
+                        <div className='content-header'>
+                          <h1 className='content-title'>
+                            {list.namePretty}
+                          </h1>
+                          <h4 className='content-caption'>
+                            No results
+                          </h4>
+                        </div>
+                      </div>
                     )}
                   </VerticalList>
                 : null}
@@ -500,6 +551,20 @@ export default class TTV4TV extends React.Component {
       case (config.CONTROLLER_BLUE):
       default:
         break
+    }
+  }
+
+  _handleSearchOnEnterDown (wrappedFunc) {
+    return (...args) => {
+      const searchString = sessionStorage.getItem(
+        config.SESSION_SEARCH_BAR_INPUT_VALUE
+      )
+      console.debug('search =>', searchString)
+      this.setState({
+        searchString,
+        navigation: config.NAVIGATION_SEARCH
+      })
+      wrappedFunc(...args)
     }
   }
 }

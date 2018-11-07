@@ -1,7 +1,6 @@
+import config from '../config'
 import React from 'react'
 import { Focusable } from 'react-key-navigation'
-
-const SESSION_SEARCH_BAR_INPUT_VALUE = 'search-bar-input-value'
 
 export default class SearchBar extends React.Component {
   constructor (...args) {
@@ -25,7 +24,7 @@ export default class SearchBar extends React.Component {
           <Focusable
             onFocus={this._handleSearchOnFocus}
             onBlur={this._handleSearchOnBlur}
-            onEnterDown={this._handleSearchOnEnterDown}
+            onEnterDown={this.props.onEnterDown(this._handleSearchOnEnterDown)}
             navDefault
           >
             <div className={
@@ -38,9 +37,9 @@ export default class SearchBar extends React.Component {
                 type='text'
                 value={this.state.searchValue}
                 style={this.state.activeFocus ? { backgroundColor: 'white' } : {}}
-                onKeyDown={`((e) => {
+                onKeyDown={`(e => {
                   sessionStorage.setItem(
-                    '${SESSION_SEARCH_BAR_INPUT_VALUE}',
+                    '${config.SESSION_SEARCH_BAR_INPUT_VALUE}',
                     e.target.value
                   )
                 })(event)`}

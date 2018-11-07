@@ -41,6 +41,8 @@ const MEDIA_PLAYER_TYPES = {
   topGames: 'game'
 }
 
+const SESSION_SEARCH_BAR_INPUT_VALUE = 'search-bar-input-value'
+
 const TWITCH_PLAYER_ID = 'ttv4tv-player'
 
 const Twitch = {
@@ -53,6 +55,7 @@ const Twitch = {
     channels: '/channels',
     games: '/games',
     topGames: '/games/top',
+    search: '/search',
     streams: '/streams',
     user: '/user',
     users: '/users'
@@ -94,6 +97,7 @@ module.exports = {
   PLAYER_INIT_HEIGHT,
   PLAYER_INIT_VOLUME,
   PLAYER_INIT_WIDTH,
+  SESSION_SEARCH_BAR_INPUT_VALUE,
   Twitch,
   TWITCH_PLAYER_ID
 }

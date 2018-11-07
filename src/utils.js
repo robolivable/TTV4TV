@@ -17,6 +17,13 @@ const mediaPropsByType = (type, item) => {
         previewUrl: item.get('game').box.large,
         viewCount: item.get('viewers')
       }
+    case 'games':
+      return {
+        id: item.get('name'),
+        gameTitle: item.get('name'),
+        previewUrl: item.get('box').large,
+        viewCount: item.get('popularity')
+      }
     case 'streams':
       return {
         id: item.get('channel').display_name,
