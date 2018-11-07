@@ -520,24 +520,24 @@ export default class TTV4TV extends React.Component {
 
   _handleMediaClick (type, id) {
     return () => {
-      if (!type) {
-        return
+      switch (type) {
+        case (config.MEDIA_PLAYER_TYPES.topGames):
+          this.setState({
+            gameClicked: id,
+            navigation: config.NAVIGATION_GAME_STREAMS
+          })
+          return
+        case (config.MEDIA_PLAYER_TYPES.streams):
+          this.setState({
+            isMediaPlayerEnabled: true,
+            media: { type, id }
+          })
+          return
+        case (config.MEDIA_PLAYER_TYPES.channels):
+          // TODO: handle single channel click
+        default:
+          return
       }
-      if (type === 'game') {
-        this.setState({
-          gameClicked: id,
-          navigation: config.NAVIGATION_GAME_STREAMS
-        })
-        return
-      }
-      if (type === 'channel') {
-        // TODO: handle channel click
-        return
-      }
-      this.setState({
-        isMediaPlayerEnabled: true,
-        media: { type, id }
-      })
     }
   }
 

@@ -35,13 +35,24 @@ const MEDIA_TYPES = {
 }
 
 const MEDIA_PLAYER_TYPES = {
-  following: 'channel',
-  streams: 'channel',
-  subscribed: 'channel',
+  channels: 'channel',
+  following: 'user',
+  streams: 'stream',
+  subscribed: 'user',
+  games: 'game',
   topGames: 'game'
 }
 
 const SESSION_SEARCH_BAR_INPUT_VALUE = 'search-bar-input-value'
+
+const TWITCH_MEDIA_PROP_TYPES = {
+  channels: 'channels',
+  following: 'following',
+  games: 'games',
+  subscribed: 'subscribed',
+  streams: 'streams',
+  topGames: 'topGames'
+}
 
 const TWITCH_PLAYER_ID = 'ttv4tv-player'
 
@@ -99,5 +110,6 @@ module.exports = {
   PLAYER_INIT_WIDTH,
   SESSION_SEARCH_BAR_INPUT_VALUE,
   Twitch,
+  TWITCH_MEDIA_PROP_TYPES,
   TWITCH_PLAYER_ID
 }

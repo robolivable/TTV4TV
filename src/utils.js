@@ -1,37 +1,39 @@
+const config = require('./config')
+
 const mediaPropsByType = (type, item) => {
   switch (type) {
-    case 'subscribed':
+    case config.TWITCH_MEDIA_PROP_TYPES.subscribed:
       return {
         id: item.get('channel').display_name,
         previewUrl: item.get('channel').logo
       }
-    case 'followed':
+    case config.TWITCH_MEDIA_PROP_TYPES.following:
       return {
         id: item.get('channel').display_name,
         previewUrl: item.get('channel').logo
       }
-    case 'topGames':
+    case config.TWITCH_MEDIA_PROP_TYPES.topGames:
       return {
         id: item.get('game').name,
         gameTitle: item.get('game').name,
         previewUrl: item.get('game').box.large,
         viewCount: item.get('viewers')
       }
-    case 'channels':
+    case config.TWITCH_MEDIA_PROP_TYPES.channels:
       return {
         id: item.get('name'),
         gameTitle: item.get('display_name'),
         previewUrl: item.get('logo'),
         viewCount: item.get('followers')
       }
-    case 'games':
+    case config.TWITCH_MEDIA_PROP_TYPES.games:
       return {
         id: item.get('name'),
         gameTitle: item.get('name'),
         previewUrl: item.get('box').large,
         viewCount: item.get('popularity')
       }
-    case 'streams':
+    case config.TWITCH_MEDIA_PROP_TYPES.streams:
       return {
         id: item.get('channel').display_name,
         gameTitle: item.get('channel').game,
