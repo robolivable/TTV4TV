@@ -14,11 +14,6 @@ const isDOMElement = o => {
 
 const mediaPropsByType = (type, item) => {
   switch (type) {
-    case config.TWITCH_MEDIA_PROP_TYPES.subscribed:
-      return {
-        id: item.get('channel').display_name,
-        previewUrl: item.get('channel').logo
-      }
     case config.TWITCH_MEDIA_PROP_TYPES.following:
       return {
         id: item.get('channel').display_name,

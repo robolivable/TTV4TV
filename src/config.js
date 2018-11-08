@@ -29,7 +29,6 @@ const PLAYER_INIT_VOLUME = 0.5
 const MEDIA_TYPES = {
   following: 'following',
   streams: 'streams',
-  subscribed: 'subscribed',
   topGames: 'topGames'
 }
 
@@ -37,7 +36,6 @@ const MEDIA_PLAYER_TYPES = {
   channels: 'channel',
   following: 'user',
   streams: 'stream',
-  subscribed: 'user',
   games: 'game',
   topGames: 'game'
 }
@@ -48,7 +46,6 @@ const TWITCH_MEDIA_PROP_TYPES = {
   channels: 'channels',
   following: 'following',
   games: 'games',
-  subscribed: 'subscribed',
   streams: 'streams',
   topGames: 'topGames'
 }

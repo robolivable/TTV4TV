@@ -138,10 +138,6 @@ class User extends TwitchObject {
     this.auth = auth
   }
 
-  async emotes () {
-    return this.resource.get('', `/users/${this.get('_id')}/emotes`)
-  }
-
   async follows () {
     const dir = config.Twitch.API_V5 + config.Twitch.DIRS.users
     const follows = new Follows(
@@ -273,10 +269,6 @@ class Twitch {
     this.auth = new TwitchAuthorization(token)
     this.user = new User('', {}, this.auth)
     await this.user.fetch()
-  }
-
-  async subscribed () {
-    return [] // TODO: find out how to cross reference emotes to channels
   }
 
   async following () {

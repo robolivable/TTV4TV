@@ -102,14 +102,6 @@ export default class SideBar extends React.Component {
               Browse Streams
             </SideBarButton>
             {this.props.isLoggedIn() ? <SideBarButton
-              icon='star'
-              onClick={this._handleSideBarButtonOnClick(
-                config.NAVIGATION_CHANNELS_SUBBED
-              )}
-            >
-              Subscribed
-            </SideBarButton> : null}
-            {this.props.isLoggedIn() ? <SideBarButton
               icon='heart'
               onClick={this._handleSideBarButtonOnClick(
                 config.NAVIGATION_CHANNELS_FOLLOWING

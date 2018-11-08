@@ -69,18 +69,6 @@ export default class TTV4TV extends React.Component {
 
         const home = await Promise.all([
           (async () => {
-            const val = await this.twitch.subscribed()
-            return {
-              name: 'subsriptions',
-              type: 'hzlist',
-              dims: [320, 180],
-              mediaMargin: 0,
-              namePretty: 'Subscriptions',
-              caption: 'Channels you are subscribed to',
-              val
-            }
-          })(),
-          (async () => {
             const val = await this.twitch.following()
             return {
               name: 'channels',
