@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable operator-linebreak */
 import config from '../config'
 import MediaContent from './media-content'
 import React from 'react'
@@ -5,6 +7,7 @@ import SearchBar from './search-bar'
 import SideBar from './side-bar'
 import Twitch from '../clients/twitch'
 import TwitchPlayer from './twitch-player'
+import utils from '../utils'
 
 import Navigation, {
   HorizontalList,
@@ -19,6 +22,7 @@ export default class TTV4TV extends React.Component {
     this._handleVerticalListOnBlur = this._handleVerticalListOnBlur.bind(this)
     this._handleOnKeyDown = this._handleOnKeyDown.bind(this)
     this._handleSearchOnEnterDown = this._handleSearchOnEnterDown.bind(this)
+    this.isLoggedIn = this.isLoggedIn.bind(this)
     this.setSearchBarIsVisible = this.setSearchBarIsVisible.bind(this)
     this.setNavigation = this.setNavigation.bind(this)
     this.state = {
@@ -41,13 +45,22 @@ export default class TTV4TV extends React.Component {
     this.twitch = new Twitch()
   }
 
-  componentDidMount () {
+  async componentDidMount () {
+    const authParams = utils.parseURLAuthParams(document.location.hash)
+    if (!authParams.length && sessionStorage.getItem('token')) {
+      authParams.push(
+        sessionStorage.getItem('token'),
+        sessionStorage.getItem('state')
+      )
+    }
+    await this.twitch.authenticate(...authParams)
     document.addEventListener('keydown', this._handleOnKeyDown, false)
     this.setState({ navigation: config.NAVIGATION_HOME })
   }
 
   async componentDidUpdate () {
-    console.info('Updated with navigation =>', this.state.navigation)
+    console.debug('Updated with navigation =>', this.state.navigation)
+    let fetched
     switch (this.state.navigation) {
       case (config.NAVIGATION_HOME):
         if (this.state.fetched[config.NAVIGATION_HOME]) {
@@ -70,12 +83,12 @@ export default class TTV4TV extends React.Component {
           (async () => {
             const val = await this.twitch.following()
             return {
-              name: 'following',
+              name: 'channels',
               type: 'hzlist',
-              dims: [320, 180],
+              dims: [272, 380],
               mediaMargin: 0,
               namePretty: 'Following',
-              caption: 'Channels you follow',
+              caption: 'Channels you are following',
               val
             }
           })(),
@@ -105,7 +118,7 @@ export default class TTV4TV extends React.Component {
           })()
         ])
 
-        var fetched = Object.assign(
+        fetched = Object.assign(
           {}, this.state.fetched, { [config.NAVIGATION_HOME]: true }
         )
         this.setState({
@@ -115,8 +128,33 @@ export default class TTV4TV extends React.Component {
         break
 
       case (config.NAVIGATION_CHANNELS_FOLLOWING):
-        // TODO: sessions
-        // TODO: channels following
+        if (this.state.fetched[config.NAVIGATION_CHANNELS_FOLLOWING]) {
+          // TODO: cache already fetched searches? (LRU?)
+          return
+        }
+
+        const channelsFollowing = await Promise.all([
+          (async () => {
+            const val = await this.twitch.following()
+            return {
+              name: 'channels',
+              type: 'grid',
+              dims: [272, 380],
+              mediaMargin: 40,
+              namePretty: 'Following',
+              caption: 'Channels you are following',
+              val
+            }
+          })()
+        ])
+        fetched = Object.assign(
+          {}, this.state.fetched,
+          { [config.NAVIGATION_CHANNELS_FOLLOWING]: true }
+        )
+        this.setState({
+          fetched,
+          channelsFollowing
+        })
         break
 
       case (config.NAVIGATION_CHANNELS_SUBBED):
@@ -144,7 +182,7 @@ export default class TTV4TV extends React.Component {
           })()
         ])
 
-        var fetched = Object.assign(
+        fetched = Object.assign(
           {}, this.state.fetched, { [config.NAVIGATION_GAMES]: true }
         )
         this.setState({
@@ -173,7 +211,7 @@ export default class TTV4TV extends React.Component {
           })()
         ])
 
-        var fetched = Object.assign(
+        fetched = Object.assign(
           {}, this.state.fetched, { [config.NAVIGATION_STREAMS]: true }
         )
         this.setState({
@@ -204,7 +242,7 @@ export default class TTV4TV extends React.Component {
             }
           })()
         ])
-        var fetched = Object.assign(
+        fetched = Object.assign(
           {}, this.state.fetched,
           { [config.NAVIGATION_GAME_STREAMS]: this.state.gameClicked }
         )
@@ -259,7 +297,7 @@ export default class TTV4TV extends React.Component {
             }
           })()
         ])
-        var fetched = Object.assign(
+        fetched = Object.assign(
           {}, this.state.fetched,
           { [config.NAVIGATION_SEARCH]: this.state.searchString }
         )
@@ -310,6 +348,7 @@ export default class TTV4TV extends React.Component {
           <HorizontalList>
             <SideBar
               setNavigation={this.setNavigation}
+              isLoggedIn={this.isLoggedIn}
             />
             <div className='mainbox'>
               <VerticalList navDefault>
@@ -362,7 +401,6 @@ export default class TTV4TV extends React.Component {
                                  key >= this.state.activeFocus)}
                         onMediaClick={this._handleMediaClick}
                         setSearchBarIsVisible={this.setSearchBarIsVisible}
-                        disablePagination
                       /> : null
                     )}
                   </VerticalList>
@@ -447,7 +485,7 @@ export default class TTV4TV extends React.Component {
                   >
                     {this.state.gameStreams.map((list, key) =>
                       !!list.val && !!list.val.length ? <MediaContent
-                        key={key+list.caption}
+                        key={key + list.caption}
                         title={list.namePretty}
                         caption={list.caption}
                         name={list.name}
@@ -471,7 +509,7 @@ export default class TTV4TV extends React.Component {
                   >
                     {this.state.search.map((list, key) =>
                       !!list.val && !!list.val.length ? <MediaContent
-                        key={key+list.caption}
+                        key={key + list.caption}
                         title={list.namePretty}
                         caption={list.caption}
                         name={list.name}
@@ -498,11 +536,6 @@ export default class TTV4TV extends React.Component {
                     )}
                   </VerticalList>
                 : null}
-                {this.state.navigation === config.NAVIGATION_LOGIN ?
-                  <div>
-                    LOGIN!!!
-                  </div>
-                : null}
               </VerticalList>
             </div>
           </HorizontalList>
@@ -511,7 +544,16 @@ export default class TTV4TV extends React.Component {
     )
   }
 
+  isLoggedIn () {
+    return this.twitch.isAuthorized
+  }
+
   setNavigation (navigation) {
+    if (navigation === config.NAVIGATION_LOGIN) {
+      this.twitch.invalidateAuthorization()
+      document.location = this.twitch.authenticationEndpoint
+      return
+    }
     this.setState({ navigation })
   }
 
@@ -539,9 +581,9 @@ export default class TTV4TV extends React.Component {
             isMediaPlayerEnabled: true,
             media: { type, id }
           })
-          return
+          break
         default:
-          return
+          break
       }
     }
   }
@@ -581,7 +623,6 @@ export default class TTV4TV extends React.Component {
       const searchString = sessionStorage.getItem(
         config.SESSION_SEARCH_BAR_INPUT_VALUE
       )
-      console.debug('search =>', searchString)
       this.setState({
         searchString,
         navigation: config.NAVIGATION_SEARCH

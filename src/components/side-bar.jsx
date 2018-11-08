@@ -49,12 +49,9 @@ export default class SideBar extends React.Component {
     this._handleVirticalListOnBlur = this._handleVirticalListOnBlur.bind(this)
 
     this.state = {
-      activeFocus: false,
-      isLoggedIn: false // TODO: sessions
+      activeFocus: false
     }
   }
-
-  componentDidMount () {}
 
   render () {
     return (
@@ -78,7 +75,7 @@ export default class SideBar extends React.Component {
                 config.NAVIGATION_LOGIN
               )}
             >
-              {this.state.isLoggedIn ? 'Logout' : 'Login'}
+              {this.props.isLoggedIn() ? 'Switch Users' : 'Login'}
             </SideBarButton>
             <SideBarButton
               icon='home'
@@ -88,22 +85,6 @@ export default class SideBar extends React.Component {
             >
               Home
             </SideBarButton>
-            {this.state.isLoggedIn ? <SideBarButton
-              icon='star'
-              onClick={this._handleSideBarButtonOnClick(
-                config.NAVIGATION_CHANNELS_SUBBED
-              )}
-            >
-              Subscribed
-            </SideBarButton> : null}
-            {this.state.isLoggedIn ? <SideBarButton
-              icon='heart'
-              onClick={this._handleSideBarButtonOnClick(
-                config.NAVIGATION_CHANNELS_FOLLOWING
-              )}
-            >
-              Following
-            </SideBarButton> : null}
             <SideBarButton
               icon='gamepad'
               onClick={this._handleSideBarButtonOnClick(
@@ -120,6 +101,22 @@ export default class SideBar extends React.Component {
             >
               Browse Streams
             </SideBarButton>
+            {this.props.isLoggedIn() ? <SideBarButton
+              icon='star'
+              onClick={this._handleSideBarButtonOnClick(
+                config.NAVIGATION_CHANNELS_SUBBED
+              )}
+            >
+              Subscribed
+            </SideBarButton> : null}
+            {this.props.isLoggedIn() ? <SideBarButton
+              icon='heart'
+              onClick={this._handleSideBarButtonOnClick(
+                config.NAVIGATION_CHANNELS_FOLLOWING
+              )}
+            >
+              Following
+            </SideBarButton> : null}
           </VerticalList>
         </div>
       </div>

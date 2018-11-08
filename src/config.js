@@ -16,7 +16,7 @@ const KEYBOARD_ESCAPE = 0x1B
 const NAVIGATION_HOME = 'home'
 const NAVIGATION_CHANNELS = 'channels'
 const NAVIGATION_CHANNELS_FOLLOWING = 'channels_following'
-const NAVIGATION_CHANNELS_SUBBED = 'channels_subbed'
+// const NAVIGATION_CHANNELS_SUBBED = 'channels_subbed'
 const NAVIGATION_GAMES = 'games'
 const NAVIGATION_STREAMS = 'streams'
 const NAVIGATION_GAME_STREAMS = 'game_streams'
@@ -60,6 +60,12 @@ const Twitch = {
   ACCEPT: 'application/vnd.twitchtv.v5+json',
   AUTHORIZATION: 'OAuth',
   AUTHORIZATION_ENDPOINT: 'https://id.twitch.tv/oauth2/authorize',
+  AUTHORIZATION_REDIRECT: 'http://localhost',
+  AUTHORIZATION_RESPONSE_TYPE: 'token',
+  AUTHORIZATION_SCOPES: [
+    'user_read',
+    'user_subscriptions'
+  ],
   API_NEW: '/helix',
   API_V5: '/kraken',
   DIRS: {
@@ -73,14 +79,7 @@ const Twitch = {
   },
   CLIENT_ID: 'lp9mi95ti4smw3c3ezxgakwd6dt65x',
   FORCE_VERIFY: false,
-  URL: 'https://api.twitch.tv',
-  REDIRECT_URL: '',
-  RESPONSE_TYPE: 'token',
-  SCOPES: [
-    'channel_read',
-    'user_read',
-    'user_subscriptions'
-  ]
+  URL: 'https://api.twitch.tv'
 }
 
 module.exports = {
@@ -99,6 +98,7 @@ module.exports = {
   MEDIA_PLAYER_TYPES,
   MEDIA_TYPES,
   NAVIGATION_CHANNELS,
+  NAVIGATION_CHANNELS_FOLLOWING,
   NAVIGATION_GAMES,
   NAVIGATION_HOME,
   NAVIGATION_LOGIN,
