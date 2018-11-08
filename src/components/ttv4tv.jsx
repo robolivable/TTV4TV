@@ -73,7 +73,7 @@ export default class TTV4TV extends React.Component {
             return {
               name: 'channels',
               type: 'hzlist',
-              dims: [272, 380],
+              dims: [200, 200],
               mediaMargin: 0,
               namePretty: 'Following',
               caption: 'Channels you are following',
@@ -127,7 +127,7 @@ export default class TTV4TV extends React.Component {
             return {
               name: 'channels',
               type: 'grid',
-              dims: [272, 380],
+              dims: [200, 200],
               mediaMargin: 40,
               namePretty: 'Following',
               caption: 'Channels you are following',
@@ -260,7 +260,7 @@ export default class TTV4TV extends React.Component {
             return {
               name: 'channels',
               type: 'grid',
-              dims: [272, 380],
+              dims: [200, 200],
               mediaMargin: 40,
               namePretty: 'Channels',
               caption: `Channel results for ${this.state.searchString}`,
