@@ -1,42 +1,63 @@
-const path = require('path');
-const webpack = require('webpack');
+/* eslint-disable */
+const path = require('path')
+const webpack = require('webpack')
+// const htmlWebpackPlugin = require('html-webpack-plugin')
 
-const sourcePath = path.join(__dirname, 'src');
+const sourcePath = path.join(__dirname, 'src')
 
 const config = {
-  entry: ['babel-polyfill', path.resolve(sourcePath, 'App.js')],
-  output: {
-    path: __dirname,
-    filename: 'bundle.js',
-  },
+  entry: ['babel-polyfill', path.resolve(sourcePath, 'app.jsx')],
+  output: { path: __dirname, filename: 'bundle.js' },
   resolve: {
     extensions: ['.js', '.jsx'],
-    modules: [sourcePath, path.resolve(__dirname, 'node_modules')],
+    modules: [sourcePath, path.resolve(__dirname, 'node_modules')]
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader'],
         include: sourcePath,
-      },
-    ],
+        exclude: /(node_modules|build)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['env', 'react']
+          }
+        }
+      }
+//      {
+//        loader: 'expose-loader?React'
+//      }
+    ]
   },
-  plugins: [],
-};
+  context: __dirname,
+//  devtool: 'source-map',
+//  devServer: {
+//    contentBase: './src/app',
+//    progress: true,
+//    stats: 'errors-only'
+//  },
+  target: 'web',
+  plugins: [
+//    new htmlWebpackPlugin({
+//      title: 'TTV4TV',
+//      hash: true
+//    })
+  ]
+}
 
 if (process.env.NODE_ENV === 'production') {
   config.plugins.push(
     new webpack.optimize.UglifyJsPlugin()
-  );
+  )
   config.plugins.push(
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.NODE_ENV': JSON.stringify('production')
     })
-  );
-  config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-  config.plugins.push(new webpack.HashedModuleIdsPlugin());
+  )
+  config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin())
+  config.plugins.push(new webpack.HashedModuleIdsPlugin())
 }
 
-module.exports = config;
+module.exports = config
+/* eslint-enable */

@@ -4,31 +4,54 @@
   "react-tv": {
     "files": [
       "index.html",
-      "bundle.js",
+      "build/bundle.js",
       "style.css"
     ]
   },
   "scripts": {
     "build": "webpack",
-    "build-prod": "cross-env NODE_ENV=production yarn build",
-    "react-tv-cli": "react-tv-cli",
-    "run-webos": "yarn build-prod && react-tv-cli run-webos",
-    "start": "webpack-dev-server --progress --colors",
+    "build-dev": "NODE_ENV=development npm run build",
+    "build-prod": "cross-env NODE_ENV=production npm run build",
+    "jshint": "./node_modules/.bin/standard",
+    "react-tv-cli": "WEBOS_CLI_TV_VERSION=4.0.0 react-tv-cli $@",
+    "start-dev": "npm run build-dev && npm run react-tv-cli -- run-webos",
+    "start-dev-server": "webpack-dev-server --progress --colors",
+    "start-webos": "npm run build-prod && npm run react-tv-cli -- run-webos",
     "test": "echo \"No tests currently defined\""
   },
+  "standard": {
+    "ignore": [
+      "build",
+      "packages"
+    ],
+    "globals": [
+      "fetch",
+      "HTMLElement",
+      "localStorage",
+      "sessionStorage"
+    ],
+    "parser": "babel-eslint"
+  },
   "license": "MIT",
+  "dependencies": {
+    "expose-loader": "^0.7.5",
+    "html-webpack-plugin": "^3.2.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-key-navigation": "file:packages/react-key-navigation",
+    "react-tv": "0.3.4",
+    "react-tv-cli": "^0.3.4"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-eslint": "^10.0.1",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.1.1",
     "jest": "^23.6.0",
-    "react": "^16.2.0",
-    "react-tv": "^0.4.2",
-    "react-tv-cli": "^0.4.2",
-    "react-tv-navigation": "^0.4.2",
+    "standard": "^12.0.1",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   }

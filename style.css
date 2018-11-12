@@ -1,60 +1,313 @@
-body {
-  background: #262626;
-  color: #4AD0EC;
-  font-family: Helvetica;
-  letter-spacing: 0.15em;
-  width: 600px;
-  margin: 0 auto;
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  background-color: #444;
+  font-family: sans-serif;
+  overflow: hidden;
 }
 
 h1 {
-  font-weight: 300;
-  color: #FFF;
-  margin: 0;
-  margin-top: 35px;
-  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 45px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
 }
 
-p {
-  font-size: 1.4em;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-wrap: wrap;
-  align-posters: center;
-  text-align: center;
-  position: relative;
-  width: 100%;
-}
-
-.container p, .container h1 {
-  width: 100%
-}
-
-.title {
-  font-size: 60px;
-}
-
-.focus-info {
-  color: #FFF;
-}
-
-.posters {
-  margin-top: 60px;
-  display: flex;
-}
-
-.poster {
-  position: relative;
-  width: 100%;
-  margin-right: 14px;
-  box-sizing: content-box;
+h4 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 100;
+  line-height: 80px;
 }
 
 :focus {
-  outline: 2px solid #4AD0EC;
+  outline: 1;
 }
 
+.content-header {
+  display: -webkit-inline-box;
+}
+
+.content-title, .content-caption {
+  color: #95a0ff;
+}
+
+.container {
+  height: 100%;
+}
+
+.content {
+  height: 100%;
+  position: relative;
+}
+
+.content .medias {
+  white-space: nowrap;
+  font-size: 0;
+  overflow: hidden;
+  padding: 50px;
+  margin: -50px;
+}
+
+.content h1, h4 {
+  padding: 0;
+  margin: 0;
+  line-height: 140px;
+  height: 100px;
+}
+
+.content h4 {
+  padding-left: 25px;
+  margin-top: 5px;
+}
+
+.content .item {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  background-color: #666;
+  font-size: 1rem;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.content .item-focus {
+  background-color: white;
+  transform: scale(1.08);
+  transition: all .2s ease-in-out;
+}
+
+.content .subscriptions.item {
+  width: 320px;
+  height: 180px;
+}
+
+.content .following.item {
+  width: 320px;
+  height: 180px;
+}
+
+.content .topGames.item, .games.item {
+  width: 272px;
+  height: 380px;
+}
+
+.content .streams.item {
+  width: 320px;
+  height: 180px;
+  margin-bottom: 20px;
+  white-space: pre-line;
+  overflow: -webkit-paged-x;
+}
+
+.content .item .twitch-media-copy {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  text-shadow: 1px 1px 1px #000;
+  padding-top: 3px;
+  padding-left: 5px;
+}
+
+.content .item .twitch-media-name {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.content .item .twitch-media-statusText {
+  font-size: 10px;
+  font-weight: 100;
+}
+
+.content .item .twitch-media-gameTitle {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.content .item .twitch-media-viewCount {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.content .subscriptions.hz-list {
+  height: 180px;
+}
+
+.content .following.hz-list {
+  height: 180px;
+}
+
+.content .topGames.hz-list {
+  height: 380px;
+}
+
+.content .streams.hz-list {
+  height: 180px;
+}
+
+.content .animate {
+  width: 25%;
+  padding-bottom: 0;
+  transition: padding-bottom 0.3s ease;
+}
+
+.content .placeholder {
+  width: 25%;
+  padding-bottom: calc(30% + 80px);
+}
+
+.contentgroup {
+  width: 100%;
+  z-index: 2;
+  opacity: 1;
+  transition: all .2s ease-in-out;
+}
+
+.contentgroup.fading-out {
+  opacity: 0;
+  display: none;
+}
+
+.mainbox {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 40px 40px 0 120px;
+}
+
+.sidebar {
+  position: absolute;
+  left: -300px;
+  top: 0;
+  width: 370px;
+  height: 100%;
+  box-shadow: 2px 0 20px 0 black;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transition: left 0.5s, background-color 0.3s;
+  background-color: #666;
+  z-index: 100;
+}
+
+.sidebar:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar.focused {
+  left: 0;
+}
+
+.icons {
+  margin-right: 22px;
+  transition: opacity 0.5s;
+  z-index: 10;
+}
+
+.icons div {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.icons .fa {
+  color: #ccc;
+  font-size: 30px;
+}
+
+.menu {
+  width: 100%;
+  height: 100%;
+  background-color: #95a0ff;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: opacity 0.5s;
+  box-sizing: border-box;
+  padding-top: 70px;
+}
+
+.menu .item {
+  height: 70px;
+  line-height: 70px;
+  color: white;
+  font-size: 25px;
+  padding-left: 90px;
+  box-sizing: border-box;
+  cursor: default;
+  display: none;
+  cursor: pointer;
+}
+
+.menu .item:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.menu .item-focus {
+  background-color: white;
+  color: #95a0ff !important;
+}
+
+.menu .item .fa {
+  width: 40px;
+}
+
+.sidebar.focused .icons {
+  opacity: 0;
+}
+
+.sidebar.focused .menu {
+  opacity: 1;
+}
+
+.sidebar.focused .menu .item {
+  display: block;
+}
+
+.search-box-placeholder {
+  width: 70%;
+  height: 50px;
+  line-height: 50px;
+  background-color: #666;
+  box-sizing: border-box;
+  padding-left: 15px;
+  cursor: pointer;
+  font-size: 25px;
+  color: #aaa;
+}
+
+.search-box-placeholder input {
+  background-color: #666;
+  display: inline;
+  position: absolute;
+  height: inherit;
+  width: inherit;
+  margin-left: 15px;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  font-size: -webkit-xxx-large;
+}
+
+.search-box-placeholder input:focus {
+  outline: none;
+}
+
+.search-box-placeholder:hover,
+.search-box-placeholder.focus,
+.search-box-placeholder input:focus,
+.search-box-placeholder input:hover {
+  color: black !important;
+  background-color: white !important;
+}
+
+#ttv4tv-player iframe {
+  margin-top: -20px;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+}
