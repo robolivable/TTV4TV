@@ -74,11 +74,13 @@ const TWITCH_MEDIA_PROP_TYPES = {
 
 const TWITCH_PLAYER_ID = 'ttv4tv-player'
 
+const packageJson = require('../package.json')
+
 const Twitch = {
   ACCEPT: 'application/vnd.twitchtv.v5+json',
   AUTHORIZATION: 'OAuth',
   AUTHORIZATION_ENDPOINT: 'https://id.twitch.tv/oauth2/authorize',
-  AUTHORIZATION_REDIRECT: 'http://localhost',
+  AUTHORIZATION_REDIRECT: packageJson.twitchConfig.redirectUrl,
   AUTHORIZATION_RESPONSE_TYPE: 'token',
   AUTHORIZATION_SCOPES: [
     'user_read',
@@ -95,7 +97,7 @@ const Twitch = {
     user: '/user',
     users: '/users'
   },
-  CLIENT_ID: 'lp9mi95ti4smw3c3ezxgakwd6dt65x',
+  CLIENT_ID: packageJson.twitchConfig.clientId,
   FORCE_VERIFY: false,
   URL: 'https://api.twitch.tv'
 }

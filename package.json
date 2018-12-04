@@ -1,6 +1,10 @@
 {
   "name": "TTV4TV",
   "version": "1.1.1",
+  "twitchConfig": {
+    "clientId":"<client_id>",
+    "redirectUrl":"<redirect_url>"
+  },
   "react-tv": {
     "files": [
       "index.html",
