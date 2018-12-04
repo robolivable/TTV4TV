@@ -78,7 +78,7 @@ const Twitch = {
   URL: 'https://api.twitch.tv'
 }
 
-module.exports = {
+export default {
   APP_NAME,
   CONTROLLER_BACK,
   CONTROLLER_BLUE,
