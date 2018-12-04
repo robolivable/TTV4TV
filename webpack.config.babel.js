@@ -1,7 +1,6 @@
 /* eslint-disable */
 const path = require('path')
 const webpack = require('webpack')
-// const htmlWebpackPlugin = require('html-webpack-plugin')
 
 const sourcePath = path.join(__dirname, 'src')
 
@@ -25,9 +24,6 @@ const config = {
           }
         }
       }
-//      {
-//        loader: 'expose-loader?React'
-//      }
     ]
   },
   context: __dirname,
@@ -37,19 +33,13 @@ const config = {
 //    progress: true,
 //    stats: 'errors-only'
 //  },
-  target: 'web',
-  plugins: [
-//    new htmlWebpackPlugin({
-//      title: 'TTV4TV',
-//      hash: true
-//    })
-  ]
+  target: 'web'
 }
 
 if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin()
-  )
+//  config.plugins.push(
+//    new webpack.optimize.UglifyJsPlugin()
+//  )
   config.plugins.push(
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')

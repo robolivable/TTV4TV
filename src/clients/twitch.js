@@ -1,5 +1,5 @@
-const config = require('../config')
-const uuid4 = require('uuid/v4')
+import config from '../config'
+import uuid4 from 'uuid/v4'
 
 class TwitchAuthorization {
   constructor (token) {
@@ -317,4 +317,4 @@ class Twitch {
   }
 }
 
-module.exports = Twitch
+export default Twitch
