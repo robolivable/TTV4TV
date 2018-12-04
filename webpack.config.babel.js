@@ -1,42 +1,75 @@
-const path = require('path');
-const webpack = require('webpack');
+/*
+ * The MIT License (MIT) Copyright (c) 2018 Robert Oliveira
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
-const sourcePath = path.join(__dirname, 'src');
+/* eslint-disable */
+const path = require('path')
+const webpack = require('webpack')
+
+const sourcePath = path.join(__dirname, 'src')
 
 const config = {
-  entry: ['babel-polyfill', path.resolve(sourcePath, 'App.js')],
-  output: {
-    path: __dirname,
-    filename: 'bundle.js',
-  },
+  entry: ['babel-polyfill', path.resolve(sourcePath, 'app.jsx')],
+  output: { path: __dirname, filename: 'bundle.js' },
   resolve: {
     extensions: ['.js', '.jsx'],
-    modules: [sourcePath, path.resolve(__dirname, 'node_modules')],
+    modules: [sourcePath, path.resolve(__dirname, 'node_modules')]
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader'],
         include: sourcePath,
-      },
-    ],
+        exclude: /(node_modules|build)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['env', 'react']
+          }
+        }
+      }
+    ]
   },
-  plugins: [],
-};
-
-if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin()
-  );
-  config.plugins.push(
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    })
-  );
-  config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
-  config.plugins.push(new webpack.HashedModuleIdsPlugin());
+  context: __dirname,
+//  devtool: 'source-map',
+//  devServer: {
+//    contentBase: './src/app',
+//    progress: true,
+//    stats: 'errors-only'
+//  },
+  target: 'web'
 }
 
-module.exports = config;
+if (process.env.NODE_ENV === 'production') {
+//  config.plugins.push(
+//    new webpack.optimize.UglifyJsPlugin()
+//  )
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    })
+  )
+  config.plugins.push(new webpack.optimize.ModuleConcatenationPlugin())
+  config.plugins.push(new webpack.HashedModuleIdsPlugin())
+}
+
+module.exports = config
+/* eslint-enable */
