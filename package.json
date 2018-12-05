@@ -19,6 +19,7 @@
     "jshint": "./node_modules/.bin/standard",
     "react-tv-cli": "WEBOS_CLI_TV_VERSION=4.0.0 react-tv-cli $@",
     "preinstall": "(cd packages && ./install.sh)",
+    "postinstall": "npm run build-prod",
     "start-dev": "npm run build-dev && npm run react-tv-cli -- run-webos",
     "start-dev-server": "webpack-dev-server --progress --colors",
     "start-webos": "npm run build-prod && npm run react-tv-cli -- run-webos $@",
