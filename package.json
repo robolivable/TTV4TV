@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "react-tv": {
     "files": [
-      "index.html",
-      "build/bundle.js",
-      "style.css"
+      "static/index.html",
+      "static/style.css",
+      "static/build/bundle.js"
     ]
   },
   "scripts": {
