@@ -1,3 +1,25 @@
+/*
+ * The MIT License (MIT) Copyright (c) 2018 Robert Oliveira
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 const APP_NAME = 'TTV4TV'
 
 const CONTROLLER_BACK = 0x1CD
@@ -52,11 +74,13 @@ const TWITCH_MEDIA_PROP_TYPES = {
 
 const TWITCH_PLAYER_ID = 'ttv4tv-player'
 
+const packageJson = require('../package.json')
+
 const Twitch = {
   ACCEPT: 'application/vnd.twitchtv.v5+json',
   AUTHORIZATION: 'OAuth',
   AUTHORIZATION_ENDPOINT: 'https://id.twitch.tv/oauth2/authorize',
-  AUTHORIZATION_REDIRECT: 'http://localhost',
+  AUTHORIZATION_REDIRECT: packageJson.twitchConfig.redirectUrl,
   AUTHORIZATION_RESPONSE_TYPE: 'token',
   AUTHORIZATION_SCOPES: [
     'user_read',
@@ -73,12 +97,12 @@ const Twitch = {
     user: '/user',
     users: '/users'
   },
-  CLIENT_ID: 'lp9mi95ti4smw3c3ezxgakwd6dt65x',
+  CLIENT_ID: packageJson.twitchConfig.clientId,
   FORCE_VERIFY: false,
   URL: 'https://api.twitch.tv'
 }
 
-module.exports = {
+export default {
   APP_NAME,
   CONTROLLER_BACK,
   CONTROLLER_BLUE,
