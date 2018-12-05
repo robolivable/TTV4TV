@@ -24,15 +24,20 @@
 const path = require('path')
 const webpack = require('webpack')
 
+const staticPath = 'static'
+
 const sourcePath = path.join(__dirname, 'src')
+const buildPath = path.join(__dirname, staticPath, 'build')
 
 const config = {
-  entry: ['babel-polyfill', path.resolve(sourcePath, 'app.jsx')],
-  output: { path: __dirname, filename: 'bundle.js' },
-  resolve: {
-    extensions: ['.js', '.jsx'],
-    modules: [sourcePath, path.resolve(__dirname, 'node_modules')]
+  context: __dirname,
+  devServer: {
+    contentBase: path.join(__dirname, staticPath)
   },
+  entry: [
+    'babel-polyfill',
+    path.resolve(sourcePath, 'app.jsx')
+  ],
   module: {
     rules: [
       {
@@ -48,14 +53,19 @@ const config = {
       }
     ]
   },
-  context: __dirname,
-//  devtool: 'source-map',
-//  devServer: {
-//    contentBase: './src/app',
-//    progress: true,
-//    stats: 'errors-only'
-//  },
-  target: 'web'
+  output: {
+    path: buildPath,
+    filename: 'bundle.js'
+  },
+  plugins: [],
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    modules: [
+      sourcePath,
+      path.resolve(__dirname, 'node_modules')
+    ]
+  },
+  target: 'web',
 }
 
 if (process.env.NODE_ENV === 'production') {
