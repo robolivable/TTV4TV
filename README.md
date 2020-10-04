@@ -1,3 +1,9 @@
+### Notice
+Twitch now has an official WebOS app (they didn't when this project was started)!
+
+The features in this project are now provided officially by Twitch, go check it out:
+https://us.lgappstv.com/main/tvapp/detail?appId=1004947
+
 #### What is TTV4TV?
 TTV4TV (Twitch TV for TV) is a front-end smart TV application powered by [React-TV](https://github.com/raphamorim/react-tv). It extends access to the [Twitch API](https://dev.twitch.tv/) to load streams directly so that unneeded features can be stripped away, and overhead can be minimized.
 
