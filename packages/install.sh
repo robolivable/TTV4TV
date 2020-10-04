@@ -1,1 +1,2 @@
-(cd react-key-navigation && npm install)
+cd react-key-navigation
+npm install
